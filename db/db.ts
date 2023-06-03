@@ -12,4 +12,4 @@ const pool = new Pool({
  
 export const db = drizzle(pool);
 
-migrate(db, { migrationsFolder: './db/migrations' });
+// migrate(db, { migrationsFolder: './db/migrations' });
