@@ -58,23 +58,22 @@ export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
   return (
     <Form {...methods}>
       <form
-        onSubmit={methods.handleSubmit((data) => {
-          startSubmitTransition(async () => {
+        onSubmit={methods.handleSubmit(async (data) => {
             try {
               await upsertQuotation({
                 ...data,
                 ...(quotation && { id: quotation.id }),
               });
+
               router.replace("/quotations");
             } catch (error) {
               const message = (error as Error).message;
               toast.toast({ title: "Error", description: message });
             }
-          });
         })}
       >
         <div className="flex w-full justify-end">
-          <Button type="submit" icon={<Save />}>
+          <Button type="submit" icon={<Save />} isLoading={methods.formState.isSubmitting}>
             Save
           </Button>
         </div>
