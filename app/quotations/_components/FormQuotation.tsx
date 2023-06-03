@@ -1,8 +1,11 @@
 "use client";
 
-import { useTransition, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { Save } from "lucide-react";
 
 import { formatCurrency } from "@/app/_utils";
 
@@ -10,33 +13,39 @@ import { TableQuotation } from "./TableQuotation";
 
 import { upsertQuotation } from "../_actions";
 
-import type { ComponentPropsWithoutRef } from "react";
-import type { Quotation } from "@/types";
 import { Button } from "@/components/button";
-import { Input } from "@/components/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/form";
+import { Form } from "@/components/form";
 import { DatePicker } from "@/components/date-picker";
-import { Save } from "lucide-react";
 import { FormInput } from "@/components/form-input";
 import { useToast } from "@/hooks";
-import { useRouter } from "next/navigation";
+
+import type { ComponentPropsWithoutRef } from "react";
+import type { Quotation } from "@/types";
+
+const schema = z.object({
+  customerTaxId: z.string().length(13),
+  documentNo: z.string().nonempty(),
+  customerName: z.string().nonempty(),
+  customerAddress: z.string().nonempty(),
+  customerZipCode: z.string().nonempty(),
+  customerBranch: z.string().nonempty(),
+  issueDate: z.date(),
+  dueDate: z.date(),
+  projectName: z.string(),
+  sellerName: z.string(),
+});
 
 export type FormQuotationProps = ComponentPropsWithoutRef<"form"> & {
   quotation?: Partial<Quotation>;
 };
 
 export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
-  const [isSubmitTransition, startSubmitTransition] = useTransition();
   const router = useRouter();
-  const methods = useForm<Quotation>({ defaultValues: quotation });
+  const methods = useForm({
+    resolver: zodResolver(schema),
+  });
 
-  const products = methods.watch("products", []) ?? [];
+  const products = (methods.watch("products", []) ?? []) as Quotation["products"];
   const total: number =
     products?.reduce?.(
       (acc, { quantity = 0, unitPrice = 0 }) => acc + quantity * unitPrice,
@@ -59,21 +68,24 @@ export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
     <Form {...methods}>
       <form
         onSubmit={methods.handleSubmit(async (data) => {
-            try {
-              await upsertQuotation({
-                ...data,
-                ...(quotation && { id: quotation.id }),
-              });
+          try {
+            const newQuotation = { ...quotation , ...data } as Quotation
 
-              router.replace("/quotations");
-            } catch (error) {
-              const message = (error as Error).message;
-              toast.toast({ title: "Error", description: message });
-            }
+            await upsertQuotation(newQuotation);
+
+            router.replace("/quotations");
+          } catch (error) {
+            const message = (error as Error).message;
+            toast.toast({ title: "Error", description: message });
+          }
         })}
       >
         <div className="flex w-full justify-end">
-          <Button type="submit" icon={<Save />} isLoading={methods.formState.isSubmitting}>
+          <Button
+            type="submit"
+            icon={<Save />}
+            isLoading={methods.formState.isSubmitting}
+          >
             Save
           </Button>
         </div>

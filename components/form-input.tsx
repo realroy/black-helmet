@@ -2,7 +2,7 @@
 
 import { useFormContext } from "react-hook-form";
 
-import { FormControl, FormField, FormItem, FormLabel } from "./form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "./form";
 import { Input } from "./input";
 
 import type { Path, FieldValues } from "react-hook-form";
@@ -25,6 +25,7 @@ export function FormInput<T extends FieldValues>({ name, label, ...props }: Form
           <FormControl>
             <Input {...props} {...field} />
           </FormControl>
+          <FormMessage />
         </FormItem>
       )}
     />

@@ -1,7 +1,6 @@
-import { db, quotation } from "@/db";
-import { desc } from "drizzle-orm";
-import { FormQuotation } from "../_components/FormQuotation";
 import { generateDocNo } from "@/app/_utils";
+
+import { FormQuotation } from "../_components/FormQuotation";
 
 export default async function Page() {
   const documentNo = await generateDocNo("QT");
