@@ -1,5 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { Loader2, MoreVerticalIcon, Trash } from "lucide-react";
+import { useTransition } from "react";
+
 import {
   TableHeader,
   TableRow,
@@ -15,9 +19,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { Loader2, MoreVerticalIcon, Trash } from "lucide-react";
-import { useTransition } from "react";
+
 import { deleteQuotation } from "../_actions";
 
 export type TableQuotationsProps = {
@@ -64,7 +66,7 @@ export function TableQuotations({ quotations }: TableQuotationsProps) {
             </TableCell>
             <TableCell onClick={() => navigateToEdit(quotation.documentNo)}>
               <p>{quotation.customerName}</p>
-              <p className="text-sm text-muted">{quotation.projectName}</p>
+              <p className="text-sm text-slate-500">{quotation.projectName}</p>
             </TableCell>
             <TableCell
               onClick={() => navigateToEdit(quotation.documentNo)}

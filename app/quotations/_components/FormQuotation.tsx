@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { Save } from "lucide-react";
+import { Printer, Save } from "lucide-react";
 
 import { formatCurrency } from "@/app/_utils";
 
@@ -81,6 +81,15 @@ export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
         })}
       >
         <div className="flex w-full justify-end">
+           <Button
+            type="button"
+            onClick={() => router.push(`/quotations/${quotation?.documentNo}/print`)}
+            variant={"outline"}
+            icon={<Printer />}
+            className="mr-1"
+          >
+            Print
+          </Button>
           <Button
             type="submit"
             icon={<Save />}

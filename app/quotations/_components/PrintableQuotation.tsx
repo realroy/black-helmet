@@ -4,16 +4,16 @@ import { formatCurrency } from "@/app/_utils";
 import type { Quotation } from "@/types";
 import { useEffect } from "react";
 
-export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
-  // useEffect(() => {
-  //   window.print();
-  // }, []);
+export function PrintableQuotation({ quotation }: { quotation: Partial<Quotation> }) {
+  useEffect(() => {
+    window.print();
+  }, []);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100vh' }}>
       <div>
         <div style={{ display: "flex", alignItems: "flex-end" }}>
           <div style={{ flex: 1 }}>
-            <p>{quotation.sellerName}</p>
+            <p>{quotation?.sellerName}</p>
             <p>Seller Address</p>
             <p>Seller Tax ID</p>
             <p>Seller Tel no</p>
@@ -28,21 +28,21 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
               <tbody>
                 <tr>
                   <th style={{ paddingTop: "1rem" }}>เลขที่</th>
-                  <td style={{ paddingTop: "1rem" }}>{quotation.documentNo}</td>
+                  <td style={{ paddingTop: "1rem" }}>{quotation?.documentNo}</td>
                 </tr>
                 <tr>
                   <th>วันที่</th>
-                  <td>{quotation.issueDate.toLocaleDateString("th")}</td>
+                  <td>{quotation?.issueDate?.toLocaleDateString("th")}</td>
                 </tr>
                 <tr>
                   <th>ผู้ขาย</th>
-                  <td>{quotation.sellerName}</td>
+                  <td>{quotation?.sellerName}</td>
                 </tr>
                 <div style={{ height: "1rem" }}></div>
                 <tr style={{ borderTop: "2px solid rgba(0,0,0,0.3)" }}>
                   <th style={{ paddingTop: "1rem" }}>ชื่องาน</th>
                   <td style={{ paddingTop: "1rem" }}>
-                    {quotation.projectName}
+                    {quotation?.projectName}
                   </td>
                 </tr>
               </tbody>
@@ -53,10 +53,10 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
           <div style={{ flex: 1 }}>
             <p style={{ fontWeight: "bold", marginTop: "1rem" }}>ลูกค้า</p>
             <p>
-              {quotation.customerName} ({quotation.customerBranch})
+              {quotation?.customerName} ({quotation?.customerBranch})
             </p>
-            <p>{quotation.customerAddress}</p>
-            <p>เลขประจำตัวผู้เสียภาษี {quotation.customerTaxId}</p>
+            <p>{quotation?.customerAddress}</p>
+            <p>เลขประจำตัวผู้เสียภาษี {quotation?.customerTaxId}</p>
           </div>
 
           <div style={{ flex: 1 }}></div>
@@ -80,7 +80,7 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
             </tr>
           </thead>
           <tbody>
-            {quotation.products?.map((product, index) => (
+            {quotation?.products?.map((product, index) => (
               <tr
                 key={index}
                 style={{ borderTop: "2px solid rgba(0,0,0,0.3)" }}
@@ -115,12 +115,12 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
                 <tr>
                   <th style={{ textAlign: "right" }}>รวมเป็นเงิน</th>
                   <td></td>
-                  <td>{quotation.subTotal}</td>
+                  <td>{quotation?.subTotal}</td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>จำนวนเงินรวมทั้งหมด</th>
                   <td></td>
-                  <td>{quotation.grandTotal}</td>
+                  <td>{quotation?.grandTotal}</td>
                 </tr>
 
                 <tr>
@@ -136,15 +136,15 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
 
                 <tr>
                   <th style={{ textAlign: "right" }}>
-                    หักภาษี ณ ที่จ่าย {quotation.withholdingTax}%
+                    หักภาษี ณ ที่จ่าย {quotation?.withholdingTax}%
                   </th>
                   <td></td>
-                  <td>{+quotation.grandTotal * +quotation.withholdingTax}</td>
+                  <td>{+(quotation?.grandTotal ?? 0) * +(quotation?.withholdingTax ?? 0)}</td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>ยอดชำระ</th>
                   <td></td>
-                  <td>{quotation.paymentAmount}</td>
+                  <td>{quotation?.paymentAmount}</td>
                 </tr>
               </tbody>
             </table>
@@ -160,7 +160,7 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
         }}
       >
         <div style={{ flex: 1, marginRight: "4rem" }}>
-          <p>ในนาม {quotation.customerName}</p>
+          <p>ในนาม {quotation?.customerName}</p>
           <div
             style={{
               display: "flex",
@@ -193,7 +193,7 @@ export function PrintableQuotation({ quotation }: { quotation: Quotation }) {
           </div>
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ textAlign: "right" }}>ในนาม {quotation.sellerName}</p>
+          <p style={{ textAlign: "right" }}>ในนาม {quotation?.sellerName}</p>
           <div
             style={{
               display: "flex",
