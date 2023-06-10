@@ -2,13 +2,17 @@ import { generateDocNo } from "@/app/_utils";
 
 import { FormQuotation } from "../_components/FormQuotation";
 
+export const metadata = {
+  title: "New Quotations | Black Helmet",
+};
+
 export default async function Page() {
   const documentNo = await generateDocNo("QT");
   // const no = 'a'
 
   return (
-    <main className="mx-auto max-w-[1024px]">
-      <h1 className="text-4xl">Create Quotations</h1>
+    <>
+      <h1 className="text-4xl">New Quotations</h1>
       <h2 className="text-xl text-slate-600 mt-4">{documentNo}</h2>
       <FormQuotation
         quotation={{
@@ -22,6 +26,6 @@ export default async function Page() {
           dueDate: new Date(),
         }}
       />
-    </main>
+    </>
   );
 }

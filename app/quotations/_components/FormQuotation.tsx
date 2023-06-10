@@ -37,15 +37,21 @@ const schema = z.object({
 
 export type FormQuotationProps = ComponentPropsWithoutRef<"form"> & {
   quotation?: Partial<Quotation>;
+  isLoading?: boolean;
 };
 
-export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
+export function FormQuotation({
+  quotation,
+  isLoading = false,
+  ...props
+}: FormQuotationProps) {
   const router = useRouter();
   const methods = useForm({
     resolver: zodResolver(schema),
   });
 
-  const products = (methods.watch("products", []) ?? []) as Quotation["products"];
+  const products = (methods.watch("products", []) ??
+    []) as Quotation["products"];
   const total: number =
     products?.reduce?.(
       (acc, { quantity = 0, unitPrice = 0 }) => acc + quantity * unitPrice,
@@ -69,7 +75,7 @@ export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
       <form
         onSubmit={methods.handleSubmit(async (data) => {
           try {
-            const newQuotation = { ...quotation , ...data } as Quotation
+            const newQuotation = { ...quotation, ...data } as Quotation;
 
             await upsertQuotation(newQuotation);
 
@@ -81,9 +87,11 @@ export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
         })}
       >
         <div className="flex w-full justify-end">
-           <Button
+          <Button
             type="button"
-            onClick={() => router.push(`/quotations/${quotation?.documentNo}/print`)}
+            onClick={() =>
+              router.push(`/quotations/${quotation?.documentNo}/print`)
+            }
             variant={"outline"}
             icon={<Printer />}
             className="mr-1"
@@ -93,7 +101,7 @@ export function FormQuotation({ quotation, ...props }: FormQuotationProps) {
           <Button
             type="submit"
             icon={<Save />}
-            isLoading={methods.formState.isSubmitting}
+            isLoading={isLoading || methods.formState.isSubmitting}
           >
             Save
           </Button>

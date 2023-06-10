@@ -4,12 +4,23 @@ import { formatCurrency } from "@/app/_utils";
 import type { Quotation } from "@/types";
 import { useEffect } from "react";
 
-export function PrintableQuotation({ quotation }: { quotation: Partial<Quotation> }) {
+export function PrintableQuotation({
+  quotation,
+}: {
+  quotation: Partial<Quotation>;
+}) {
   useEffect(() => {
     window.print();
   }, []);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100vh' }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100vh",
+      }}
+    >
       <div>
         <div style={{ display: "flex", alignItems: "flex-end" }}>
           <div style={{ flex: 1 }}>
@@ -28,7 +39,9 @@ export function PrintableQuotation({ quotation }: { quotation: Partial<Quotation
               <tbody>
                 <tr>
                   <th style={{ paddingTop: "1rem" }}>เลขที่</th>
-                  <td style={{ paddingTop: "1rem" }}>{quotation?.documentNo}</td>
+                  <td style={{ paddingTop: "1rem" }}>
+                    {quotation?.documentNo}
+                  </td>
                 </tr>
                 <tr>
                   <th>วันที่</th>
@@ -80,7 +93,7 @@ export function PrintableQuotation({ quotation }: { quotation: Partial<Quotation
             </tr>
           </thead>
           <tbody>
-            {quotation?.products?.map((product, index) => (
+            {quotation?.products?.map?.((product, index) => (
               <tr
                 key={index}
                 style={{ borderTop: "2px solid rgba(0,0,0,0.3)" }}
@@ -139,7 +152,10 @@ export function PrintableQuotation({ quotation }: { quotation: Partial<Quotation
                     หักภาษี ณ ที่จ่าย {quotation?.withholdingTax}%
                   </th>
                   <td></td>
-                  <td>{+(quotation?.grandTotal ?? 0) * +(quotation?.withholdingTax ?? 0)}</td>
+                  <td>
+                    {+(quotation?.grandTotal ?? 0) *
+                      +(quotation?.withholdingTax ?? 0)}
+                  </td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>ยอดชำระ</th>
