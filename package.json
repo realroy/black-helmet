@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "db:migrate",
     "db:migrate": "swc-node ./db/migrate.ts",
     "db:generate": "drizzle-kit generate:pg",
     "db:up": "drizzle-kit up:pg"
@@ -66,9 +65,11 @@
     "@types/pg": "^8.10.1",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
+    "dotenv": "^16.1.4",
     "drizzle-kit": "^0.18.1",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "swc-node": "^1.0.0",
     "typescript": "5.1.3"
   }
 }
