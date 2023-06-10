@@ -21,6 +21,7 @@ import { useToast } from "@/hooks";
 
 import type { ComponentPropsWithoutRef } from "react";
 import type { Quotation } from "@/types";
+import { calculateProductsPriceData } from "@/services/calculate-products-price-data";
 
 const schema = z.object({
   customerTaxId: z.string().length(13),
@@ -33,6 +34,16 @@ const schema = z.object({
   dueDate: z.date(),
   projectName: z.string(),
   sellerName: z.string(),
+  products: z
+    .array(
+      z.object({
+        name: z.string().nonempty(),
+        quantity: z.number().min(1),
+        unit: z.string().nonempty(),
+        unitPrice: z.coerce.number(),
+      })
+    )
+    .optional(),
 });
 
 export type FormQuotationProps = ComponentPropsWithoutRef<"form"> & {
@@ -52,17 +63,17 @@ export function FormQuotation({
 
   const products = (methods.watch("products", []) ??
     []) as Quotation["products"];
-  const total: number =
-    products?.reduce?.(
-      (acc, { quantity = 0, unitPrice = 0 }) => acc + quantity * unitPrice,
-      0
-    ) ?? 0;
+  const withholdingTax = +(quotation?.withholdingTax ?? 0.03);
+
+  const { total, amount } = calculateProductsPriceData(
+    products ?? [],
+    withholdingTax
+  );
+
   const grandTotal = +(quotation?.grandTotal ?? 0);
 
   const formattedTotal = formatCurrency(total);
-  const withholdingTax = +(quotation?.withholdingTax ?? 0.03);
   const formattedWithholdingTax = `${withholdingTax * 100}%`;
-  const amount = total * (1 - withholdingTax);
   const formattedAmount = formatCurrency(amount);
   const toast = useToast();
 

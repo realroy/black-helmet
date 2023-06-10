@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/node-postgres";
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
 
 const pool = new Pool({
@@ -9,7 +9,7 @@ const pool = new Pool({
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
 });
- 
+
 export const db = drizzle(pool);
 
-// migrate(db, { migrationsFolder: './db/migrations' });
+migrate(db, { migrationsFolder: "./app/_migrations" });

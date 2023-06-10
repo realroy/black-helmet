@@ -33,9 +33,7 @@ export const quotation = pgTable("quotations", {
     .defaultNow(),
   dueDate: timestamp("due_date", { withTimezone: true }).notNull().defaultNow(),
   projectName: varchar("project_name").notNull(),
-  products: jsonb("jsonb")
-    .$type<QuotationProduct[]>()
-    .default([]),
+  products: jsonb("products").$type<QuotationProduct[]>().default([]),
   subTotal: decimal("sub_total", { precision: 100, scale: 2 })
     .notNull()
     .default("0.00"),

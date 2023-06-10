@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "preinstall": "drizzle-kit up:pg",
     "db:generate": "drizzle-kit generate:pg",
     "db:up": "drizzle-kit up:pg"
   },
