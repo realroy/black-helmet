@@ -1,4 +1,4 @@
 {
   "schema": "./db/schema.ts",
-  "out": "./app/_migrations"
+  "out": "./db/migrations"
 }
