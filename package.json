@@ -46,9 +46,11 @@
     "date-fns": "^2.30.0",
     "drizzle-orm": "^0.26.5",
     "drizzle-zod": "^0.4.3",
+    "jose": "^4.14.4",
     "lucide-react": "^0.221.0",
     "nanoid": "^4.0.2",
     "next": "13.4.4",
+    "next-auth": "^4.22.1",
     "pg": "^8.11.0",
     "postcss": "8.4.23",
     "react": "18.2.0",
@@ -69,6 +71,7 @@
     "drizzle-kit": "^0.18.1",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "nodemailer": "^6.9.3",
     "swc-node": "^1.0.0",
     "typescript": "5.1.3"
   }
