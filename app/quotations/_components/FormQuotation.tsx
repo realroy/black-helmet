@@ -11,7 +11,7 @@ import { formatCurrency } from "@/app/_utils";
 
 import { TableQuotation } from "./TableQuotation";
 
-import { upsertQuotation } from "../_actions";
+import { upsertQuotationAction } from "../_actions";
 
 import { Button } from "@/components/button";
 import { Form } from "@/components/form";
@@ -88,7 +88,7 @@ export function FormQuotation({
           try {
             const newQuotation = { ...quotation, ...data } as Quotation;
 
-            await upsertQuotation(newQuotation);
+            await upsertQuotationAction({ newQuotation });
 
             router.replace("/quotations");
           } catch (error) {

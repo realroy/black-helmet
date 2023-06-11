@@ -15,6 +15,13 @@
       "when": 1686383981583,
       "tag": "0001_wild_baron_strucker",
       "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1686476377062,
+      "tag": "0002_sharp_exodus",
+      "breakpoints": false
     }
   ]
 }

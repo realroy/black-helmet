@@ -20,7 +20,7 @@ import {
   DropdownMenuItem,
 } from "@/components/dropdown-menu";
 
-import { deleteQuotation } from "../_actions";
+import { deleteQuotationAction } from "../_actions";
 
 export type TableQuotationsProps = {
   quotations: Pick<
@@ -85,7 +85,10 @@ export function TableQuotations({ quotations }: TableQuotationsProps) {
                       e.preventDefault();
 
                       startDeleteTransition(() => {
-                        deleteQuotation(quotation.id);
+                        deleteQuotationAction({
+                          quotationId: quotation.id,
+                          userId: 1,
+                        });
                       });
                     }}
                     disabled={isDeletePending}

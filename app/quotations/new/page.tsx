@@ -1,14 +1,17 @@
 import { generateDocNo } from "@/app/_utils";
 
 import { FormQuotation } from "../_components/FormQuotation";
+import { getCurrentUser } from "@/app/_utils/get-current-user";
 
 export const metadata = {
   title: "New Quotations | Black Helmet",
 };
 
 export default async function Page() {
-  const documentNo = await generateDocNo("QT");
-  // const no = 'a'
+  const [documentNo, currentUser] = await Promise.all([
+    generateDocNo("QT"),
+    getCurrentUser(),
+  ]);
 
   return (
     <>
@@ -24,6 +27,7 @@ export default async function Page() {
           customerBranch: "",
           issueDate: new Date(),
           dueDate: new Date(),
+          userId: +currentUser?.id ?? undefined,
         }}
       />
     </>
