@@ -10,6 +10,17 @@ export const nextAuthOptions = {
   //   verifyRequest: "/auth/verify-request",
   //   newUser: "/auth/new-user",
   // },
+  cookies: {
+    pkceCodeVerifier: {
+      name: "next-auth.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
   providers: [
     AppleProvider({
       clientId: process.env.APPLE_CLIENT_ID as string,
