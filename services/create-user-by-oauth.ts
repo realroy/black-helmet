@@ -7,11 +7,12 @@ export type CreateUserByOauthInput = {
 };
 
 export function createUserByOauth({ email }: CreateUserByOauthInput) {
+  console.log({ email });
   return db
     .insert(user)
     .values({
       email,
-      password: generatePassword(),
+      password: "12345678",
     })
     .onConflictDoNothing({ target: [user.email] })
     .returning({ id: user.id, email: user.email });
