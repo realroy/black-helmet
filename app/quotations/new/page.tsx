@@ -8,10 +8,22 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const [documentNo, currentUser] = await Promise.all([
+  const [documentNoResponse, currentUserResponse] = await Promise.allSettled([
     generateDocNo("QT"),
     getCurrentUser(),
   ]);
+
+  const documentNo =
+    documentNoResponse.status === "fulfilled"
+      ? documentNoResponse.value
+      : undefined;
+
+  const currentUser =
+    currentUserResponse.status === "fulfilled"
+      ? currentUserResponse.value
+      : undefined;
+
+  const userId = +(currentUser?.id ?? 0) || undefined;
 
   return (
     <>
@@ -27,7 +39,7 @@ export default async function Page() {
           customerBranch: "",
           issueDate: new Date(),
           dueDate: new Date(),
-          userId: +currentUser?.id ?? undefined,
+          userId,
         }}
       />
     </>

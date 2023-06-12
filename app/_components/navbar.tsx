@@ -5,11 +5,10 @@ import Link from "next/link";
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
 import { signOut } from "next-auth/react";
+import { Session } from "next-auth";
 
 export type NavbarProps = {
-  user?: {
-    email: string;
-  };
+  user?: Session["user"];
 };
 
 export function Navbar({ user }: NavbarProps) {
