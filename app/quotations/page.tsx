@@ -23,9 +23,9 @@ export default async function Page({ params }: { params: { no: string } }) {
   return (
     <>
       <div className="flex justify-between">
-        <h1 className="text-4xl">Quotations</h1>
+        <h1 className="text-4xl">ใบแจ้งหนี้</h1>
         <Link href={"/quotations/new"}>
-          <Button icon={<Plus />}>New</Button>
+          <Button icon={<Plus />}>สร้าง</Button>
         </Link>
       </div>
       <TableQuotations quotations={quotations} />

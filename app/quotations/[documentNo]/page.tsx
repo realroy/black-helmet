@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { FormQuotation } from "../_components/FormQuotation";
 
 import type { Metadata } from "next";
+import { HeaderDocument } from "../_components/HeaderQuotation";
 
 type Props = {
   params: { documentNo: string };
@@ -10,7 +11,7 @@ type Props = {
 
 export function generateMetadata({ params: { documentNo } }: Props): Metadata {
   return {
-    title: `Edit ${documentNo} | Black Helmet`,
+    title: `แก้ไข ${documentNo} | Black Helmet`,
   };
 }
 
@@ -23,8 +24,10 @@ export default async function Page({ params: { documentNo } }: Props) {
 
   return (
     <>
-      <h1 className="text-4xl">Edit Quotation</h1>
-      <h2 className="text-xl text-slate-600 mt-4">{documentNo}</h2>
+      <HeaderDocument
+        title="แก้ไขใบแจ้งหนี้"
+        documentNo={quotations[0].documentNo}
+      />
       <FormQuotation quotation={quotations[0]} />
     </>
   );

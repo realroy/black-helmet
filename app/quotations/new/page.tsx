@@ -1,8 +1,10 @@
+import { ArrowLeftCircleIcon } from "lucide-react";
 import { FormQuotation } from "../_components/FormQuotation";
 import { newQuotation } from "@/services/new-quotation";
+import { HeaderDocument } from "../_components/HeaderQuotation";
 
 export const metadata = {
-  title: "New Quotations | Black Helmet",
+  title: "สร้างใบแจ้งหนี้ | Black Helmet",
 };
 
 export default async function Page() {
@@ -10,8 +12,10 @@ export default async function Page() {
 
   return (
     <>
-      <h1 className="text-4xl">New Quotations</h1>
-      <h2 className="text-xl text-slate-600 mt-4">{quotation.documentNo}</h2>
+      <HeaderDocument
+        documentNo={quotation.documentNo}
+        title="สร้างใบแจ้งหนี้"
+      />
       <FormQuotation quotation={quotation} />
     </>
   );
