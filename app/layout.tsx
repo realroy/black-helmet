@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 
 import { Navbar } from "./_components/navbar";
 import { getAppServerSession } from "./_utils/get-app-server-session";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex min-h-full">
-          <Navbar user={user} />
-          <div>{children}</div>
-        </div>
+      <body className={cn(inter.className, "flex min-h-full")}>
+        <Navbar user={user} />
+        {children}
       </body>
     </html>
   );

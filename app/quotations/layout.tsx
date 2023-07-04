@@ -11,9 +11,5 @@ export const metadata = {
 export default async function Layout({ children }: { children: ReactNode }) {
   await getAppServerSession();
 
-  return (
-    <>
-      <Container>{children}</Container>
-    </>
-  );
+  return <Container>{children}</Container>;
 }
