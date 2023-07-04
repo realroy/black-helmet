@@ -1,5 +1,6 @@
 import {
   decimal,
+  index,
   integer,
   jsonb,
   pgTable,
@@ -58,7 +59,7 @@ export const quotation = pgTable(
       .references(() => user.id),
   },
   (quotations) => ({
-    userIndex: uniqueIndex("quotations_user_id_idx").on(quotations.userId),
+    userIndex: index("quotations_user_id_idx").on(quotations.userId),
   })
 );
 

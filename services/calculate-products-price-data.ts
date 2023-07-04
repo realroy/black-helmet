@@ -9,7 +9,7 @@ export function calculateProductsPriceData(
     0
   );
 
-  const amount = total * (1 - withholdingTax);
+  const amount = total * (1 - withholdingTax) ?? 0;
 
   return {
     total,

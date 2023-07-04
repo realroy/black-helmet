@@ -86,7 +86,11 @@ export function FormQuotation({
       <form
         onSubmit={methods.handleSubmit(async (data) => {
           try {
-            const newQuotation = { ...quotation, ...data } as Quotation;
+            const newQuotation = {
+              ...quotation,
+              ...data,
+              userId: quotation?.userId,
+            } as Quotation;
 
             await upsertQuotationAction({ newQuotation });
 

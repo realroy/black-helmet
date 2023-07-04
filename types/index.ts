@@ -13,7 +13,7 @@ export type QuotationProduct = {
   unit: string;
   unitPrice: number;
 };
-export type CreateQuotationSchema = z.infer<typeof createQuotationSchema>;
-export type UpdateQuotationSchema = z.infer<typeof updateQuotationSchema>;
+export type CreateQuotation = z.infer<typeof createQuotationSchema>;
+export type UpdateQuotation = z.infer<typeof updateQuotationSchema>;
 
 export type User = InferModel<typeof user>;
