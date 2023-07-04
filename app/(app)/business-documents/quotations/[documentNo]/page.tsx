@@ -1,9 +1,9 @@
 import { db, quotation } from "@/db";
 import { eq } from "drizzle-orm";
-import { FormQuotation } from "../_components/FormQuotation";
+import { FormQuotation } from "../../_components/FormQuotation";
 
 import type { Metadata } from "next";
-import { HeaderDocument } from "../_components/HeaderQuotation";
+import { HeaderDocument } from "../../_components/HeaderQuotation";
 
 type Props = {
   params: { documentNo: string };
@@ -11,7 +11,7 @@ type Props = {
 
 export function generateMetadata({ params: { documentNo } }: Props): Metadata {
   return {
-    title: `แก้ไข ${documentNo} | Black Helmet`,
+    title: `แก้ไขใบเสนอราคา ${documentNo} | Black Helmet`,
   };
 }
 
@@ -25,7 +25,7 @@ export default async function Page({ params: { documentNo } }: Props) {
   return (
     <>
       <HeaderDocument
-        title="แก้ไขใบแจ้งหนี้"
+        title="แก้ไขใบเสนอราคา"
         documentNo={quotations[0].documentNo}
       />
       <FormQuotation quotation={quotations[0]} />

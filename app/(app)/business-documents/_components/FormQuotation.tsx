@@ -38,7 +38,7 @@ const schema = z.object({
     .array(
       z.object({
         name: z.string().nonempty(),
-        quantity: z.number().min(1),
+        quantity: z.coerce.number().min(1),
         unit: z.string().nonempty(),
         unitPrice: z.coerce.number(),
       })
@@ -94,7 +94,7 @@ export function FormQuotation({
 
             await upsertQuotationAction({ newQuotation });
 
-            router.replace("/quotations");
+            router.replace("/business-documents/quotations");
           } catch (error) {
             const message = (error as Error).message;
             toast.toast({ title: "Error", description: message });
@@ -104,12 +104,12 @@ export function FormQuotation({
         <div className="flex w-full justify-end">
           <Button
             type="button"
-            onClick={() =>
-              router.push(`/quotations/${quotation?.documentNo}/print`)
-            }
+            onClick={() => {
+              window.open(`/print/documents/${quotation?.id}`);
+            }}
             variant={"outline"}
             icon={<Printer />}
-            className="mr-1"
+            className="mr-2"
           >
             Print
           </Button>

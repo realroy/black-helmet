@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 import { Button } from "@/components/button";
-import { Container } from "@/components/container";
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
 import { DollarSignIcon, LogOutIcon, UserCircle2Icon } from "lucide-react";
@@ -29,7 +28,7 @@ export function Navbar({ user }: NavbarProps) {
             </div>
           </Link>
           <div className="my-8"></div>
-          <Link href={"/quotations"} title="Quotations">
+          <Link href={"/business-documents/quotations"} title="Quotations">
             <div className={itemClassName}>
               <DollarSignIcon />
             </div>

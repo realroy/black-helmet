@@ -12,7 +12,6 @@ import {
   type UpsertQuotationByUserInput,
   upsertQuotationByUser,
 } from "@/services/upsert-quotation-by-user";
-import { getCurrentUser } from "../_utils/get-current-user";
 
 function reinvalidateQuotations() {
   return revalidatePath("/quotations");

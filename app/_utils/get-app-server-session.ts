@@ -1,7 +1,7 @@
 "use server";
 
 import { nextAuthOptions } from "@/configs/next-auth-options";
-import { type Session, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export type GetAppServerSessionOptions = {

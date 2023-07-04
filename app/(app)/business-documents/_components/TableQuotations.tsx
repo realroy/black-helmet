@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Loader2, MoreVerticalIcon, Trash } from "lucide-react";
+import { Loader2, MoreVerticalIcon, PrinterIcon, Trash } from "lucide-react";
 import { useTransition } from "react";
+import Link from "next/link";
 
 import {
   TableHeader,
@@ -12,7 +13,6 @@ import {
   TableCell,
   Table,
 } from "@/components/table";
-import type { Quotation } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -21,6 +21,9 @@ import {
 } from "@/components/dropdown-menu";
 
 import { deleteQuotationAction } from "../_actions";
+import { formatCurrency } from "@/app/_utils";
+
+import type { Quotation } from "@/types";
 
 export type TableQuotationsProps = {
   quotations: Pick<
@@ -39,16 +42,16 @@ export function TableQuotations({ quotations }: TableQuotationsProps) {
   const [isDeletePending, startDeleteTransition] = useTransition();
 
   const navigateToEdit = (documentNo: Quotation["documentNo"]) =>
-    router.push(`/quotations/${documentNo}`);
+    router.push(`/business-documents/quotations/${documentNo}`);
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Doc Date</TableHead>
-          <TableHead>Doc No.</TableHead>
-          <TableHead>Customer / Project</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead className="w-[100px]">วันที่</TableHead>
+          <TableHead>เลขที่เอกสาร </TableHead>
+          <TableHead>ชื่อลูกค้า/ชื่อโปรเจ็ค</TableHead>
+          <TableHead className="text-right">ยอดรวมสุทธิ</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -72,7 +75,7 @@ export function TableQuotations({ quotations }: TableQuotationsProps) {
               onClick={() => navigateToEdit(quotation.documentNo)}
               className="text-right"
             >
-              {quotation.paymentAmount}
+              {formatCurrency(+quotation.paymentAmount)}
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -80,7 +83,19 @@ export function TableQuotations({ quotations }: TableQuotationsProps) {
                   <MoreVerticalIcon className="h-4 w-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                  <Link
+                    href={`/print/documents/${quotation.id}`}
+                    target="_blank"
+                    rel="noreferer"
+                  >
+                    <DropdownMenuItem className="cursor-pointer">
+                      <PrinterIcon className="h-4 w-4 mr-2" />
+                      พิมพ์
+                    </DropdownMenuItem>
+                  </Link>
+
                   <DropdownMenuItem
+                    className="cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault();
 
@@ -98,7 +113,7 @@ export function TableQuotations({ quotations }: TableQuotationsProps) {
                     ) : (
                       <Trash className="h-4 w-4 mr-2" />
                     )}
-                    Delete
+                    ลบ
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
