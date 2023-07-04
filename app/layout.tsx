@@ -22,8 +22,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar user={user} />
-        {children}
+        <div className="flex min-h-full">
+          <Navbar user={user} />
+          <div>{children}</div>
+        </div>
       </body>
     </html>
   );
