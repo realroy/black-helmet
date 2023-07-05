@@ -36,12 +36,11 @@ export type BusinessDocumentProduct = {
   unitPrice: number;
 };
 export type BusinessDocument = InferModel<typeof businessDocuments>;
-export type CreateBusinessDocument = z.infer<
-  typeof createBusinessDocumentSchema
+export type CreateBusinessDocument = InferModel<
+  typeof businessDocuments,
+  "insert"
 >;
-export type UpdateBusinessDocument = z.infer<
-  typeof updateBusinessDocumentSchema
->;
+export type UpdateBusinessDocument = CreateBusinessDocument;
 
 export type PaginationQueries = {
   page?: number;

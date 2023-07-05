@@ -52,7 +52,6 @@ async function getUser() {
 }
 
 export async function upsertQuotationAction(input: UpsertQuotationByUserInput) {
-  getUser();
   return upsertQuotationByUser(input).then(reinvalidateQuotations);
 }
 
@@ -63,9 +62,8 @@ export async function deleteQuotationAction(input: DeleteQuotationByUserInput) {
 export async function upsertBusinessDocumentAction(
   input: UpsertBusinessDocumentByUserInput
 ) {
-  getUser();
   return upsertBusinessDocumentByUser(input).then(
-    reinvalidateBusinessDocument(input.newBusinessDocument.kind)
+    reinvalidateBusinessDocument(input.kind)
   );
 }
 

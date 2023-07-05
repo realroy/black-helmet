@@ -7,21 +7,28 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Printer, Save } from "lucide-react";
 
-import { formatCurrency } from "@/app/_utils";
-
-import { TableQuotation } from "./TableQuotation";
-
-import { upsertQuotationAction } from "../_actions";
+import { upsertBusinessDocumentAction } from "../_actions";
 
 import { Button } from "@/components/button";
 import { Form } from "@/components/form";
 import { DatePicker } from "@/components/date-picker";
 import { FormInput } from "@/components/form-input";
 import { useToast } from "@/hooks";
+import {
+  isError,
+  formatCurrency,
+  calculateProductsPriceData,
+} from "@/app/_utils";
+
+import { TableBusinessDocumentProducts } from "./table-business-document-products";
 
 import type { ComponentPropsWithoutRef } from "react";
-import type { Quotation } from "@/types";
-import { calculateProductsPriceData } from "@/services/calculate-products-price-data";
+import type {
+  BusinessDocumentKind,
+  CreateBusinessDocument,
+  UpdateBusinessDocument,
+  User,
+} from "@/types";
 
 const schema = z.object({
   customerTaxId: z.string().length(13),
@@ -46,31 +53,36 @@ const schema = z.object({
     .optional(),
 });
 
-export type FormQuotationProps = ComponentPropsWithoutRef<"form"> & {
-  quotation?: Partial<Quotation>;
+type Schema = z.infer<typeof schema>;
+
+export type FormBusinessDocumentProps = ComponentPropsWithoutRef<"form"> & {
+  businessDocument?: CreateBusinessDocument | UpdateBusinessDocument;
+  userId: User["id"];
   isLoading?: boolean;
+  kind: BusinessDocumentKind;
 };
 
-export function FormQuotation({
-  quotation,
+export function FormBusinessDocument({
+  businessDocument,
   isLoading = false,
+  kind,
+  userId,
   ...props
-}: FormQuotationProps) {
+}: FormBusinessDocumentProps) {
   const router = useRouter();
-  const methods = useForm({
+  const methods = useForm<Schema>({
     resolver: zodResolver(schema),
   });
 
-  const products = (methods.watch("products", []) ??
-    []) as Quotation["products"];
-  const withholdingTax = +(quotation?.withholdingTax ?? 0.03);
+  const products = methods.watch("products", []) ?? [];
+  const withholdingTax = +(businessDocument?.withholdingTax ?? 0.03);
 
   const { total, amount } = calculateProductsPriceData(
-    products ?? [],
+    products,
     withholdingTax
   );
 
-  const grandTotal = +(quotation?.grandTotal ?? 0);
+  const grandTotal = +(businessDocument?.grandTotal ?? 0);
 
   const formattedTotal = formatCurrency(total);
   const formattedWithholdingTax = `${withholdingTax * 100}%`;
@@ -78,26 +90,32 @@ export function FormQuotation({
   const toast = useToast();
 
   useEffect(() => {
-    methods.reset(quotation);
-  }, [quotation, methods]);
+    // @ts-ignore
+    methods.reset(businessDocument);
+  }, [businessDocument, methods]);
 
   return (
-    <Form {...methods}>
+    <Form {...props} {...methods}>
       <form
         onSubmit={methods.handleSubmit(async (data) => {
+          const newBusinessDocument = {
+            ...businessDocument,
+            ...data,
+            kind,
+            userId,
+          };
+
           try {
-            const newQuotation = {
-              ...quotation,
-              ...data,
-              userId: quotation?.userId,
-            } as Quotation;
-
-            await upsertQuotationAction({ newQuotation });
-
-            router.replace("/business-documents/quotations");
+            await upsertBusinessDocumentAction(newBusinessDocument);
+            const url = `/business-documents/${kind
+              .toLowerCase()
+              .replace("_", "-")}s`;
+            // @ts-ignore
+            router.replace(url);
           } catch (error) {
-            const message = (error as Error).message;
-            toast.toast({ title: "Error", description: message });
+            if (isError(error)) {
+              toast.toast({ title: "Error", description: error.message });
+            }
           }
         })}
       >
@@ -105,7 +123,7 @@ export function FormQuotation({
           <Button
             type="button"
             onClick={() => {
-              window.open(`/print/documents/${quotation?.id}`);
+              window.open(`/print/documents/${businessDocument?.id}`);
             }}
             variant={"outline"}
             icon={<Printer />}
@@ -194,7 +212,7 @@ export function FormQuotation({
         /> */}
 
         <div className="py-2">
-          <TableQuotation />
+          <TableBusinessDocumentProducts />
         </div>
 
         <div className="grid grid-cols-12">

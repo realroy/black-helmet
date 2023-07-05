@@ -3,17 +3,17 @@
 import { ArrowLeftCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-type HeaderDocumentProps = {
+type HeaderBusinessDocumentProps = {
   documentNo: string;
   title: string;
   isLoading?: boolean;
 };
 
-export function HeaderDocument({
+export function HeaderBusinessDocument({
   documentNo,
   title,
   isLoading,
-}: HeaderDocumentProps) {
+}: HeaderBusinessDocumentProps) {
   const router = useRouter();
 
   return (

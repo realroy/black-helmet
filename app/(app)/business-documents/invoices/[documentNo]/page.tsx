@@ -15,12 +15,12 @@ type Props = {
 
 export function generateMetadata({ params: { documentNo } }: Props): Metadata {
   return {
-    title: `แก้ไขใบเสนอราคา ${documentNo} | Black Helmet`,
+    title: `แก้ไขใบแจ้งหนี้ ${documentNo} | Black Helmet`,
   };
 }
 
 export default async function Page({ params: { documentNo } }: Props) {
-  const [quotation] = await db
+  const [invoice] = await db
     .select()
     .from(businessDocuments)
     .where(eq(businessDocuments.documentNo, documentNo))
@@ -29,13 +29,13 @@ export default async function Page({ params: { documentNo } }: Props) {
   return (
     <>
       <HeaderBusinessDocument
-        title="แก้ไขใบเสนอราคา"
-        documentNo={quotation.documentNo}
+        title="แก้ไขใบแจ้งหนี้"
+        documentNo={invoice.documentNo}
       />
       <FormBusinessDocument
-        businessDocument={quotation}
-        userId={quotation.userId}
-        kind={"QUOTATION"}
+        businessDocument={invoice}
+        userId={invoice.userId}
+        kind={"INVOICE"}
       />
     </>
   );

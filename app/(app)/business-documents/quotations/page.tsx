@@ -1,6 +1,7 @@
-import { Button } from "@/components/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+
+import { Button } from "@/components/button";
 import { TableBusinessDocuments } from "../_components/table-business-documents";
 import { getBusinessDocuments } from "@/repositories";
 import { PaginationQueries } from "@/types";
@@ -10,7 +11,7 @@ type Props = {
   query?: PaginationQueries;
 };
 
-export default async function Page({ params, query }: Props) {
+export default async function Page({ query }: Props) {
   const businessDocuments = await getBusinessDocuments({
     kinds: ["QUOTATION"],
     page: query?.page,

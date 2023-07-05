@@ -20,10 +20,10 @@ import {
   DropdownMenuItem,
 } from "@/components/dropdown-menu";
 
-import { deleteQuotationAction } from "../_actions";
+import { deleteBusinessDocumentAction } from "../_actions";
 import { formatCurrency } from "@/app/_utils";
 
-import type { BusinessDocument, Quotation } from "@/types";
+import type { BusinessDocument } from "@/types";
 
 export type TableBusinessDocumentsProps = {
   businessDocuments: Pick<
@@ -34,6 +34,8 @@ export type TableBusinessDocumentsProps = {
     | "customerName"
     | "projectName"
     | "paymentAmount"
+    | "kind"
+    | "userId"
   >[];
 };
 
@@ -43,8 +45,17 @@ export function TableBusinessDocuments({
   const router = useRouter();
   const [isDeletePending, startDeleteTransition] = useTransition();
 
-  const navigateToEdit = (documentNo: BusinessDocument["documentNo"]) =>
-    router.push(`/business-documents/quotations/${documentNo}`);
+  const navigateToEdit = ({
+    documentNo,
+    kind,
+  }: TableBusinessDocumentsProps["businessDocuments"][number]) => {
+    const url = `/business-documents/${kind
+      .toLowerCase()
+      .replaceAll("_", "-")}s/${documentNo}`;
+
+    // @ts-ignore
+    router.push(url);
+  };
 
   return (
     <Table>
@@ -58,76 +69,70 @@ export function TableBusinessDocuments({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {businessDocuments.map((businessDocument) => (
-          <TableRow key={businessDocument.id} className="cursor-pointer">
-            <TableCell
-              className="font-medium"
-              onClick={() => navigateToEdit(businessDocument.documentNo)}
-            >
-              {businessDocument.createdAt.toLocaleDateString("th")}
-            </TableCell>
-            <TableCell
-              onClick={() => navigateToEdit(businessDocument.documentNo)}
-            >
-              {businessDocument.documentNo}
-            </TableCell>
-            <TableCell
-              onClick={() => navigateToEdit(businessDocument.documentNo)}
-            >
-              <p>{businessDocument.customerName}</p>
-              <p className="text-sm text-slate-500">
-                {businessDocument.projectName}
-              </p>
-            </TableCell>
-            <TableCell
-              onClick={() => navigateToEdit(businessDocument.documentNo)}
-              className="text-right"
-            >
-              {formatCurrency(+businessDocument.paymentAmount)}
-            </TableCell>
-            <TableCell>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <MoreVerticalIcon className="h-4 w-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <Link
-                    href={`/print/documents/${businessDocument.id}`}
-                    target="_blank"
-                    rel="noreferer"
-                  >
-                    <DropdownMenuItem className="cursor-pointer">
-                      <PrinterIcon className="h-4 w-4 mr-2" />
-                      พิมพ์
-                    </DropdownMenuItem>
-                  </Link>
+        {businessDocuments.map((businessDocument) => {
+          const handleClick = () => navigateToEdit(businessDocument);
+          return (
+            <TableRow key={businessDocument.id} className="cursor-pointer">
+              <TableCell className="font-medium" onClick={handleClick}>
+                {businessDocument.createdAt.toLocaleDateString("th")}
+              </TableCell>
+              <TableCell onClick={handleClick}>
+                {businessDocument.documentNo}
+              </TableCell>
+              <TableCell onClick={handleClick}>
+                <p>{businessDocument.customerName}</p>
+                <p className="text-sm text-slate-500">
+                  {businessDocument.projectName}
+                </p>
+              </TableCell>
+              <TableCell onClick={handleClick} className="text-right">
+                {formatCurrency(+businessDocument.paymentAmount)}
+              </TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <MoreVerticalIcon className="h-4 w-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <Link
+                      href={`/print/documents/${businessDocument.id}`}
+                      target="_blank"
+                      rel="noreferer"
+                    >
+                      <DropdownMenuItem className="cursor-pointer">
+                        <PrinterIcon className="h-4 w-4 mr-2" />
+                        พิมพ์
+                      </DropdownMenuItem>
+                    </Link>
 
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault();
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
 
-                      startDeleteTransition(() => {
-                        deleteQuotationAction({
-                          quotationId: businessDocument.id,
-                          userId: 1,
+                        startDeleteTransition(() => {
+                          deleteBusinessDocumentAction({
+                            businessDocumentId: businessDocument.id,
+                            userId: businessDocument.userId,
+                            kind: businessDocument.kind,
+                          });
                         });
-                      });
-                    }}
-                    disabled={isDeletePending}
-                  >
-                    {isDeletePending ? (
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    ) : (
-                      <Trash className="h-4 w-4 mr-2" />
-                    )}
-                    ลบ
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TableCell>
-          </TableRow>
-        ))}
+                      }}
+                      disabled={isDeletePending}
+                    >
+                      {isDeletePending ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <Trash className="h-4 w-4 mr-2" />
+                      )}
+                      ลบ
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { nanoid } from "nanoid";
-import { Delete, Plus, X } from "lucide-react";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import { Plus, X } from "lucide-react";
 
 import {
   Table,
@@ -13,21 +12,24 @@ import {
   TableRow,
 } from "@/components/table";
 import { Button } from "@/components/button";
-import type { Quotation, QuotationProduct } from "@/types";
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FormInput } from "@/components/form-input";
 import { formatCurrency } from "@/app/_utils";
 
-type QuotationProductWithKey = QuotationProduct & { key: string };
+import type { CreateBusinessDocument, UpdateBusinessDocument } from "@/types";
 
-export function TableQuotation() {
-  const { control } = useFormContext<Quotation>();
+export function TableBusinessDocumentProducts() {
+  const { control } = useFormContext<
+    CreateBusinessDocument | UpdateBusinessDocument
+  >();
 
-  const { fields: productsFields = [], append, remove } = useFieldArray({
+  const {
+    fields: productsFields = [],
+    append,
+    remove,
+  } = useFieldArray({
     control,
     name: "products",
   });
-
 
   return (
     <section>
@@ -82,14 +84,20 @@ type RowProps = {
 };
 
 function Row({ index, onDelete }: RowProps) {
-  const quantity = useWatch({ name: `products.${index}.quantity`, defaultValue: 0 });
-  const unitPrice = useWatch({ name: `products.${index}.unitPrice`, defaultValue: 0 });
+  const quantity = useWatch({
+    name: `products.${index}.quantity`,
+    defaultValue: 0,
+  });
+  const unitPrice = useWatch({
+    name: `products.${index}.unitPrice`,
+    defaultValue: 0,
+  });
 
-  const total = formatCurrency(quantity * unitPrice)
+  const total = formatCurrency(quantity * unitPrice);
 
   return (
     <TableRow>
-      <TableCell>{index+1}</TableCell>
+      <TableCell>{index + 1}</TableCell>
       <TableCell>
         <FormInput
           type="text"
@@ -121,14 +129,12 @@ function Row({ index, onDelete }: RowProps) {
           placeholder="Unit Price"
         />
       </TableCell>
-      <TableCell>
-        {total}
-      </TableCell>
+      <TableCell>{total}</TableCell>
       <TableCell>
         <button
           onClick={(e) => {
             e.preventDefault();
-            onDelete()
+            onDelete();
           }}
           type="button"
         >

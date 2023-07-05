@@ -1,22 +1,28 @@
-import { ArrowLeftCircleIcon } from "lucide-react";
-import { FormQuotation } from "../../_components/FormQuotation";
-import { newQuotation } from "@/services/new-quotation";
-import { HeaderDocument } from "../../_components/HeaderQuotation";
+import { newBusinessDocumentByUser } from "@/services";
+
+import {
+  HeaderBusinessDocument,
+  FormBusinessDocument,
+} from "../../_components";
 
 export const metadata = {
   title: "สร้างใบเสนอราคา | Black Helmet",
 };
 
 export default async function Page() {
-  const quotation = await newQuotation();
+  const quotation = await newBusinessDocumentByUser({ kind: "QUOTATION" });
 
   return (
     <>
-      <HeaderDocument
+      <HeaderBusinessDocument
         documentNo={quotation.documentNo}
         title="สร้างใบเสนอราคา"
       />
-      <FormQuotation quotation={quotation} />
+      <FormBusinessDocument
+        businessDocument={quotation}
+        userId={quotation.userId}
+        kind={"QUOTATION"}
+      />
     </>
   );
 }

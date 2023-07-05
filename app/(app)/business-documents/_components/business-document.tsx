@@ -1,6 +1,6 @@
 import { formatCurrency } from "@/app/_utils";
 
-export function Quotation() {
+export function BusinessDocument() {
   const grandTotal = 0;
   const formattedGrandTotal = formatCurrency(grandTotal);
   const total = 0;
@@ -21,11 +21,9 @@ export function Quotation() {
           </div>
           <fieldset>
             <label htmlFor="customerAddress">Customer Address</label>
-            <p className="w-full">
-              Address
-            </p>
+            <p className="w-full">Address</p>
             <p>Zip Code</p>
-           <p>Customer Tax Id</p>
+            <p>Customer Tax Id</p>
             <input
               type="text"
               className="w-1/2"

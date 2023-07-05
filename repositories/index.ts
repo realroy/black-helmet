@@ -32,14 +32,14 @@ export async function getBusinessDocuments({
       paymentAmount: businessDocuments.paymentAmount,
       customerName: businessDocuments.customerName,
       projectName: businessDocuments.projectName,
+      userId: businessDocuments.userId,
+      kind: businessDocuments.kind,
     })
     .from(businessDocuments)
     .where(and(...whereConditions))
     .orderBy(desc(businessDocuments.documentNo))
     .offset((page - 1) * limit)
     .limit(limit);
-
-  console.log(queryBuilder.toSQL());
 
   return queryBuilder.execute();
 }

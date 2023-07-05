@@ -1,8 +1,10 @@
 "use client";
 
-import { formatCurrency } from "@/app/_utils";
-import type { Quotation } from "@/types";
 import { useEffect } from "react";
+
+import { formatCurrency } from "@/app/_utils";
+
+import type { Quotation } from "@/types";
 
 export function PrintableQuotation({
   quotation,
