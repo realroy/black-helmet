@@ -1,24 +1,21 @@
-import { db, quotation } from "@/db";
-import { desc } from "drizzle-orm";
-
-import { TableQuotations } from "../_components/TableQuotations";
 import { Button } from "@/components/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { TableBusinessDocuments } from "../_components/table-business-documents";
+import { getBusinessDocuments } from "@/repositories";
+import { PaginationQueries } from "@/types";
 
-export default async function Page({ params }: { params: { no: string } }) {
-  const quotations = await db
-    .select({
-      documentNo: quotation.documentNo,
-      id: quotation.id,
-      createdAt: quotation.createdAt,
-      paymentAmount: quotation.paymentAmount,
-      customerName: quotation.customerName,
-      projectName: quotation.projectName,
-    })
-    .from(quotation)
-    .orderBy(desc(quotation.documentNo))
-    .limit(10);
+type Props = {
+  params: {};
+  query?: PaginationQueries;
+};
+
+export default async function Page({ params, query }: Props) {
+  const businessDocuments = await getBusinessDocuments({
+    kinds: ["QUOTATION"],
+    page: query?.page,
+    limit: query?.limit,
+  });
 
   return (
     <>
@@ -28,7 +25,7 @@ export default async function Page({ params }: { params: { no: string } }) {
           <Button icon={<Plus />}>สร้าง</Button>
         </Link>
       </div>
-      <TableQuotations quotations={quotations} />
+      <TableBusinessDocuments businessDocuments={businessDocuments} />
     </>
   );
 }

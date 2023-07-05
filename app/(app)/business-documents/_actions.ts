@@ -13,8 +13,25 @@ import {
   upsertQuotationByUser,
 } from "@/services/upsert-quotation-by-user";
 
+import {
+  upsertBusinessDocumentByUser,
+  deleteBusinessDocumentByUser,
+} from "@/services";
+import type {
+  UpsertBusinessDocumentByUserInput,
+  DeleteBusinessDocumentByUserInput,
+} from "@/services";
+import { BusinessDocumentKind } from "@/types";
+
 function reinvalidateQuotations() {
   return revalidatePath("/quotations");
+}
+
+function reinvalidateBusinessDocument(kind: BusinessDocumentKind) {
+  return () =>
+    revalidatePath(
+      `/business-documents/${kind.toLowerCase().replace("_", "-")}`
+    );
 }
 
 async function getUser() {
@@ -41,4 +58,21 @@ export async function upsertQuotationAction(input: UpsertQuotationByUserInput) {
 
 export async function deleteQuotationAction(input: DeleteQuotationByUserInput) {
   return deleteQuotationByUser(input).then(reinvalidateQuotations);
+}
+
+export async function upsertBusinessDocumentAction(
+  input: UpsertBusinessDocumentByUserInput
+) {
+  getUser();
+  return upsertBusinessDocumentByUser(input).then(
+    reinvalidateBusinessDocument(input.newBusinessDocument.kind)
+  );
+}
+
+export async function deleteBusinessDocumentAction(
+  input: DeleteBusinessDocumentByUserInput & { kind: BusinessDocumentKind }
+) {
+  return deleteBusinessDocumentByUser(input).then(
+    reinvalidateBusinessDocument(input.kind)
+  );
 }

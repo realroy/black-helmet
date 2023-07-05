@@ -35,7 +35,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
           </Link>
         </ul>
       </nav>
-      <Container>{children}</Container>;
+      <Container>{children}</Container>
     </div>
   );
 }

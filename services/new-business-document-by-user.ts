@@ -1,12 +1,21 @@
 import { getCurrentUser } from "@/app/_utils/get-current-user";
-import { GenerateDocNoError, generateDocNo } from "./utils/generate-doc-no";
-import { Session } from "next-auth";
+import {
+  GenerateDocNoError,
+  generateDocNo,
+} from "@/services/utils/generate-doc-no";
 
-import { type CreateQuotation } from "@/types";
+import type { Session } from "next-auth";
+import type { BusinessDocumentKind, CreateBusinessDocument } from "@/types";
 
-export async function newQuotation() {
+export type NewBusinessDocumentByUserInput = {
+  kind: BusinessDocumentKind;
+};
+
+export async function newBusinessDocumentByUser({
+  kind,
+}: NewBusinessDocumentByUserInput) {
   const [generateDocNoResponse, getCurrentUserResponse] =
-    await Promise.allSettled([generateDocNo("QUOTATION"), getCurrentUser()]);
+    await Promise.allSettled([generateDocNo(kind), getCurrentUser()]);
 
   if (generateDocNoResponse.status === "rejected") {
     throw new GenerateDocNoError();
@@ -37,5 +46,6 @@ export async function newQuotation() {
     withholdingTax: "0.0",
     paymentAmount: "0.0",
     sellerName: "",
-  } satisfies CreateQuotation;
+    kind,
+  } satisfies CreateBusinessDocument;
 }
