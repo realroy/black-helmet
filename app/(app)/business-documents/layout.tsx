@@ -1,9 +1,10 @@
 import { DollarSignIcon, FilesIcon } from "lucide-react";
-import Link from "next/link";
 
 import { Container } from "@/components/container";
 
 import { getAppServerSession } from "@/app/_utils/get-app-server-session";
+
+import { MenuItem } from "./_components/menu-item";
 
 import type { ReactNode } from "react";
 
@@ -23,18 +24,19 @@ export default async function Layout({ children }: { children: ReactNode }) {
           <h2 className="text-xl font-semibold">เอกสารขาย</h2>
         </div>
         <ul>
-          <Link href={"/business-documents/quotations"}>
-            <li className="p-4 flex hover:bg-slate-200">
-              <FilesIcon className="mr-2" />
-              <span className="flex-1">ใบเสนอราคา</span>
-            </li>
-          </Link>
-          <Link href={"/business-documents/invoices"}>
-            <li className="p-4 flex hover:bg-slate-200">
-              <FilesIcon className="mr-2" />
-              <span className="flex-1">ใบแจ้งหนี้</span>
-            </li>
-          </Link>
+          <MenuItem
+            href={"/business-documents/quotations"}
+            icon={<FilesIcon className="mr-2" />}
+          >
+            ใบเสนอราคา
+          </MenuItem>
+
+          <MenuItem
+            href={"/business-documents/invoices"}
+            icon={<FilesIcon className="mr-2" />}
+          >
+            ใบแจ้งหนี้
+          </MenuItem>
         </ul>
       </nav>
       <Container>{children}</Container>
