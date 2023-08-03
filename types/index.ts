@@ -47,3 +47,8 @@ export type PaginationQueries = {
   limit?: number;
   sortBy?: `${string}-${"ASC" | "DESC"}`;
 };
+
+export type PageProps<TParams = {}> = {
+  params: TParams;
+  searchParams: { [key: string]: string | string[] | undefined };
+};

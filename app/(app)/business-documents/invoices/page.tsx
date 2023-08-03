@@ -4,18 +4,17 @@ import Link from "next/link";
 import { Button } from "@/components/button";
 import { TableBusinessDocuments } from "../_components/table-business-documents";
 import { getBusinessDocuments } from "@/repositories";
-import { PaginationQueries } from "@/types";
 
-type Props = {
-  params: {};
-  query?: PaginationQueries;
-};
+import type { PageProps } from "@/types";
 
-export default async function Page({ query }: Props) {
+export default async function Page({ searchParams }: PageProps) {
+  const page = searchParams?.page ? Number(searchParams.page) : 1;
+  const limit = searchParams?.limit ? Number(searchParams.limit) : 10;
+
   const businessDocuments = await getBusinessDocuments({
     kinds: ["INVOICE"],
-    page: query?.page,
-    limit: query?.limit,
+    page,
+    limit,
   });
 
   return (
