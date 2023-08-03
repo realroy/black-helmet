@@ -3,15 +3,16 @@
 import { formatCurrency } from "@/app/_utils";
 import { useEffect } from "react";
 
-import type { Quotation } from "@/types";
+import type { BusinessDocument } from "@/types";
+import { toThaiCurrencyPronuciation } from "./utils";
 
 type Props = {
-  document: Partial<Quotation>;
+  document: Partial<BusinessDocument>;
 };
 
 export function PrintableBussinessDocument({ document }: Props) {
   useEffect(() => {
-    window.print();
+    // window.print();
   }, []);
 
   return (
@@ -27,9 +28,6 @@ export function PrintableBussinessDocument({ document }: Props) {
         <div style={{ display: "flex", alignItems: "flex-end" }}>
           <div style={{ flex: 1 }}>
             <p>{document?.sellerName}</p>
-            <p>Seller Address</p>
-            <p>Seller Tax ID</p>
-            <p>Seller Tel no</p>
           </div>
 
           <div style={{ flex: 1 }}>
@@ -115,7 +113,9 @@ export function PrintableBussinessDocument({ document }: Props) {
         </table>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={{ flex: 1 }}>(บาทถ้วน)</div>
+          <div style={{ flex: 1 }}>
+            ({toThaiCurrencyPronuciation(+(document?.grandTotal ?? "0"))})
+          </div>
           <div style={{ flex: 1 }}>
             <table
               style={{
