@@ -18,6 +18,7 @@ export function PrintableBussinessDocument({ document }: Props) {
   return (
     <div
       style={{
+        fontSize: 12,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
