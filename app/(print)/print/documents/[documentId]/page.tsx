@@ -1,18 +1,13 @@
-import { db, quotation } from "@/db";
-import { eq } from "drizzle-orm";
-
+import { get } from "http";
 import { PrintableBussinessDocument } from "../../_components/printable-business-document";
 
-type Props = {
-  params: { documentId: string };
-};
+import type { PageProps } from "@/types";
+import { getBusinessDocumentById } from "@/repositories";
 
-export default async function Page({ params: { documentId } }: Props) {
-  const [document] = await db
-    .select()
-    .from(quotation)
-    .where(eq(quotation.id, +documentId))
-    .limit(1);
+export default async function Page({
+  params: { documentId },
+}: PageProps<{ documentId: string }>) {
+  const document = await getBusinessDocumentById(+documentId);
 
   return <PrintableBussinessDocument document={document} />;
 }
