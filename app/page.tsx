@@ -18,10 +18,8 @@ export default function Home() {
           <li>
             <Card>
               <CardHeader>
-                <CardTitle>Business Documents</CardTitle>
-                <CardDescription>
-                  Manage your business documents
-                </CardDescription>
+                <CardTitle>เอกสารทางธุรกิจ</CardTitle>
+                <CardDescription>จัดการเอกสารทางธุรกิจ</CardDescription>
               </CardHeader>
             </Card>
           </li>
