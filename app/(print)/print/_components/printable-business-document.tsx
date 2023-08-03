@@ -12,7 +12,7 @@ type Props = {
 
 export function PrintableBussinessDocument({ document }: Props) {
   useEffect(() => {
-    // window.print();
+    window.print();
   }, []);
 
   return (
