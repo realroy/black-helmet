@@ -2,7 +2,8 @@ import { and, desc, eq, inArray } from "drizzle-orm";
 
 import { businessDocuments, db } from "@/db";
 import { getCurrentUser } from "@/app/_utils/get-current-user";
-import type { BusinessDocumentKind } from "@/types";
+
+import type { BusinessDocument, BusinessDocumentKind } from "@/types";
 
 type GetBusinessDocumentsInput = {
   kinds?: BusinessDocumentKind[];
@@ -42,4 +43,14 @@ export async function getBusinessDocuments({
     .limit(limit);
 
   return queryBuilder.execute();
+}
+
+export async function getBusinessDocumentById(id: BusinessDocument["id"]) {
+  const [document] = await db
+    .select()
+    .from(businessDocuments)
+    .where(eq(businessDocuments.id, +id))
+    .limit(1);
+
+  return document;
 }
