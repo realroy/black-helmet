@@ -139,14 +139,14 @@ export function FormBusinessDocument({
             icon={<Printer />}
             className="mr-2"
           >
-            Print
+            พิมพ์
           </Button>
           <Button
             type="submit"
             icon={<Save />}
             isLoading={isLoading || methods.formState.isSubmitting}
           >
-            Save
+            บันทึก
           </Button>
         </div>
         <div className="grid grid-cols-12">
