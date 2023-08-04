@@ -7,7 +7,6 @@ export type CreateUserByOauthInput = {
 };
 
 export function createUserByOauth({ email }: CreateUserByOauthInput) {
-  console.log({ email });
   return db
     .insert(user)
     .values({

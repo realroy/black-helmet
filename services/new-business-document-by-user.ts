@@ -15,7 +15,10 @@ export async function newBusinessDocumentByUser({
   kind,
 }: NewBusinessDocumentByUserInput) {
   const [generateDocNoResponse, getCurrentUserResponse] =
-    await Promise.allSettled([generateDocNo(kind), getCurrentUser()]);
+    await Promise.allSettled([
+      generateDocNo(kind),
+      getCurrentUser({ isThrowOnFailure: true }),
+    ]);
 
   if (generateDocNoResponse.status === "rejected") {
     throw new GenerateDocNoError();
@@ -25,9 +28,7 @@ export async function newBusinessDocumentByUser({
     throw new Error("Cannot get current user");
   }
 
-  const currentUser = getCurrentUserResponse.value as NonNullable<
-    Session["user"]
-  >;
+  const currentUser = getCurrentUserResponse.value;
 
   return {
     documentNo: generateDocNoResponse.value,
@@ -39,7 +40,7 @@ export async function newBusinessDocumentByUser({
     issueDate: new Date(),
     dueDate: new Date(),
     projectName: "",
-    userId: +currentUser.id,
+    userId: currentUser.id,
     products: [],
     subTotal: "0.0",
     grandTotal: "0.0",

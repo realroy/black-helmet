@@ -1,6 +1,5 @@
 import { getCurrentUser } from "@/app/_utils/get-current-user";
 import { GenerateDocNoError, generateDocNo } from "./utils/generate-doc-no";
-import { Session } from "next-auth";
 
 import { type CreateQuotation } from "@/types";
 
@@ -16,9 +15,7 @@ export async function newQuotation() {
     throw new Error("Cannot get current user");
   }
 
-  const currentUser = getCurrentUserResponse.value as NonNullable<
-    Session["user"]
-  >;
+  const currentUser = getCurrentUserResponse.value;
 
   return {
     documentNo: generateDocNoResponse.value,
@@ -30,7 +27,7 @@ export async function newQuotation() {
     issueDate: new Date(),
     dueDate: new Date(),
     projectName: "",
-    userId: +currentUser.id,
+    userId: currentUser.id,
     products: [],
     subTotal: "0.0",
     grandTotal: "0.0",

@@ -17,22 +17,14 @@ export async function getCurrentUser({
     throw new GetCurrentUserError("No current user");
   }
 
-  try {
-    const email = session?.user?.email ?? "";
+  const email = session?.user?.email ?? "";
 
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1)
-      .execute();
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1)
+    .execute();
 
-    return user;
-  } catch (error) {
-    console.error("getCurrentUser", error);
-
-    if (isThrowOnFailure) throw new GetCurrentUserError();
-
-    return null;
-  }
+  return user;
 }
