@@ -16,9 +16,9 @@ export async function getBusinessDocuments({
   page = 1,
   limit = 10,
 }: GetBusinessDocumentsInput) {
-  console.debug({ kinds, page, limit });
   const currentUser = await getCurrentUser({ isThrowOnFailure: true });
   const userId = currentUser?.id ?? 0;
+  console.log("userId", userId);
 
   const whereConditions = [eq(businessDocuments.userId, +userId)];
 
