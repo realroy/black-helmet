@@ -6,7 +6,7 @@ import {
 export default function Loading() {
   return (
     <>
-      <HeaderBusinessDocument title="ใบแจ้งหนี้" documentNo="" isLoading />
+      <HeaderBusinessDocument title="สร้างใบเสนอราคา" documentNo="" isLoading />
       <FormBusinessDocument isLoading userId={0} kind={"QUOTATION"} />
     </>
   );

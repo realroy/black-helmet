@@ -1,17 +1,14 @@
 "use client";
 
-import { format } from "date-fns";
+import { format, type Locale } from "date-fns";
+import { th, enUS } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/button";
 import { Calendar } from "@/components/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/popover";
 import {
   FormControl,
   FormField,
@@ -20,15 +17,30 @@ import {
   FormMessage,
 } from "@/components/form";
 
-import type { FieldValues, Path } from 'react-hook-form'
+import type { FieldValues, Path } from "react-hook-form";
 
-export type DatePickerProps<T extends FieldValues> = {
-  name: Path<T>
-  label: string
+type DatePickerLocaleProps = "th" | "en";
+
+const LOCALE_MAP: Record<DatePickerLocaleProps, Locale> = {
+  th,
+  en: enUS,
 };
 
-export function DatePicker<T extends FieldValues>({ name, label }: DatePickerProps<T>) {
-  const { control } = useFormContext<T>()
+export type DatePickerProps<T extends FieldValues> = {
+  name: Path<T>;
+  label: string;
+  locale: DatePickerLocaleProps;
+  isLoading?: boolean;
+};
+
+export function DatePicker<T extends FieldValues>({
+  name,
+  label,
+  locale = "th",
+  isLoading = false,
+}: DatePickerProps<T>) {
+  const { control, formState } = useFormContext<T>();
+
   return (
     <FormField
       control={control}
@@ -40,6 +52,9 @@ export function DatePicker<T extends FieldValues>({ name, label }: DatePickerPro
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
+                  isLoading={
+                    isLoading || formState.isLoading || formState.isSubmitting
+                  }
                   variant={"outline"}
                   className={cn(
                     "w-full pl-3 text-left font-normal",
@@ -47,9 +62,9 @@ export function DatePicker<T extends FieldValues>({ name, label }: DatePickerPro
                   )}
                 >
                   {field.value ? (
-                    format(field.value, "PPP")
+                    format(field.value, "PPP", { locale: LOCALE_MAP[locale] })
                   ) : (
-                    <span>Pick a date</span>
+                    <span>เลือกวัน</span>
                   )}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
@@ -60,6 +75,7 @@ export function DatePicker<T extends FieldValues>({ name, label }: DatePickerPro
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
+                locale={LOCALE_MAP[locale]}
                 initialFocus
               />
             </PopoverContent>

@@ -17,15 +17,16 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 export type FormInputProps<T extends FieldValues> = {
   name: Path<T>;
   label?: ReactNode;
+  isLoading?: boolean;
 } & ComponentPropsWithoutRef<"input">;
 
 export function FormInput<T extends FieldValues>({
   name,
   label,
+  isLoading = false,
   ...props
 }: FormInputProps<T>) {
   const { control, formState } = useFormContext<T>();
-  const { isLoading, isSubmitting } = formState;
 
   return (
     <FormField
@@ -35,7 +36,13 @@ export function FormInput<T extends FieldValues>({
         <FormItem className="py-2">
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input {...props} {...field} disabled={isLoading || isSubmitting} />
+            <Input
+              {...props}
+              {...field}
+              disabled={
+                isLoading || formState.isLoading || formState.isSubmitting
+              }
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

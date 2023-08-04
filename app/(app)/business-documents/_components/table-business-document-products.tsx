@@ -1,6 +1,11 @@
 "use client";
 
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import {
+  useFieldArray,
+  useFormContext,
+  useFormState,
+  useWatch,
+} from "react-hook-form";
 import { Plus, X } from "lucide-react";
 
 import {
@@ -17,7 +22,13 @@ import { formatCurrency } from "@/app/_utils";
 
 import type { CreateBusinessDocument, UpdateBusinessDocument } from "@/types";
 
-export function TableBusinessDocumentProducts() {
+export type TableBusinessDocumentProductsProps = {
+  isLoading?: boolean;
+};
+
+export function TableBusinessDocumentProducts({
+  isLoading = false,
+}: TableBusinessDocumentProductsProps) {
   const { control } = useFormContext<
     CreateBusinessDocument | UpdateBusinessDocument
   >();
@@ -31,17 +42,19 @@ export function TableBusinessDocumentProducts() {
     name: "products",
   });
 
+  const formState = useFormState();
+
   return (
     <section>
       <Table className="w-full p-4">
         <TableHeader>
           <TableRow>
-            <TableHead>No.</TableHead>
-            <TableHead>Name / Description</TableHead>
-            <TableHead>Quantity</TableHead>
-            <TableHead>Unit</TableHead>
-            <TableHead>Unit Price</TableHead>
-            <TableHead>Total</TableHead>
+            <TableHead>ลำดับ</TableHead>
+            <TableHead>ชื่อสินค้า / รายละเอียด</TableHead>
+            <TableHead>จำนวน</TableHead>
+            <TableHead>หน่วย</TableHead>
+            <TableHead>ราคาต่อหน่วย</TableHead>
+            <TableHead>ราคารวม</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
@@ -51,6 +64,7 @@ export function TableBusinessDocumentProducts() {
               {...product}
               index={index}
               key={product.id}
+              isLoading={isLoading}
               onDelete={() => remove(index)}
             />
           ))}
@@ -60,6 +74,8 @@ export function TableBusinessDocumentProducts() {
         <Button
           variant="outline"
           type="button"
+          icon={<Plus />}
+          isLoading={isLoading || formState.isSubmitting || formState.isLoading}
           onClick={(e) => {
             e.preventDefault();
 
@@ -71,7 +87,7 @@ export function TableBusinessDocumentProducts() {
             });
           }}
         >
-          <Plus className="mr-2 h-4 w-4" /> Add
+          Add
         </Button>
       </div>
     </section>
@@ -81,13 +97,15 @@ export function TableBusinessDocumentProducts() {
 type RowProps = {
   index: number;
   onDelete: () => void;
+  isLoading?: boolean;
 };
 
-function Row({ index, onDelete }: RowProps) {
+function Row({ index, onDelete, isLoading = false }: RowProps) {
   const quantity = useWatch({
     name: `products.${index}.quantity`,
     defaultValue: 0,
   });
+
   const unitPrice = useWatch({
     name: `products.${index}.unitPrice`,
     defaultValue: 0,
@@ -96,13 +114,14 @@ function Row({ index, onDelete }: RowProps) {
   const total = formatCurrency(quantity * unitPrice);
 
   return (
-    <TableRow>
+    <TableRow className="py-12">
       <TableCell>{index + 1}</TableCell>
       <TableCell>
         <FormInput
           type="text"
           name={`products.${index}.name`}
-          placeholder="Name / Description"
+          placeholder="ชื่อสินค้า / รายละเอียด"
+          isLoading={isLoading}
         />
       </TableCell>
       <TableCell>
@@ -111,14 +130,16 @@ function Row({ index, onDelete }: RowProps) {
           name={`products.${index}.quantity`}
           pattern="\d+"
           required
-          placeholder="Quantity"
+          placeholder="จำนวน"
+          isLoading={isLoading}
         />
       </TableCell>
       <TableCell>
         <FormInput
           type="text"
           name={`products.${index}.unit`}
-          placeholder="Unit"
+          placeholder="หน่วย"
+          isLoading={isLoading}
         />
       </TableCell>
       <TableCell>
@@ -126,12 +147,15 @@ function Row({ index, onDelete }: RowProps) {
           type="text"
           pattern="\d+"
           name={`products.${index}.unitPrice`}
-          placeholder="Unit Price"
+          placeholder="ราคาต่อหน่วย"
+          isLoading={isLoading}
         />
       </TableCell>
       <TableCell>{total}</TableCell>
       <TableCell>
         <button
+          title="ลบ"
+          disabled={isLoading}
           onClick={(e) => {
             e.preventDefault();
             onDelete();

@@ -72,6 +72,20 @@ export function FormBusinessDocument({
   const router = useRouter();
   const methods = useForm<Schema>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      ...businessDocument,
+      customerAddress: businessDocument?.customerAddress ?? "",
+      customerBranch: businessDocument?.customerBranch ?? "",
+      customerName: businessDocument?.customerName ?? "",
+      customerTaxId: businessDocument?.customerTaxId ?? "",
+      customerZipCode: businessDocument?.customerZipCode ?? "",
+      documentNo: businessDocument?.documentNo ?? "",
+      dueDate: businessDocument?.dueDate ?? new Date(),
+      projectName: businessDocument?.projectName ?? "",
+      sellerName: businessDocument?.sellerName ?? "",
+      issueDate: businessDocument?.issueDate ?? new Date(),
+      products: businessDocument?.products ?? [],
+    },
   });
 
   const products = methods.watch("products", []) ?? [];
@@ -88,11 +102,6 @@ export function FormBusinessDocument({
   const formattedWithholdingTax = `${withholdingTax * 100}%`;
   const formattedAmount = formatCurrency(amount);
   const toast = useToast();
-
-  useEffect(() => {
-    // @ts-ignore
-    methods.reset(businessDocument);
-  }, [businessDocument, methods]);
 
   return (
     <Form {...props} {...methods}>
@@ -125,6 +134,7 @@ export function FormBusinessDocument({
             onClick={() => {
               window.open(`/print/documents/${businessDocument?.id}`);
             }}
+            isLoading={isLoading || methods.formState.isSubmitting}
             variant={"outline"}
             icon={<Printer />}
             className="mr-2"
@@ -145,6 +155,7 @@ export function FormBusinessDocument({
               name="customerName"
               label="ชื่อลูกค้า"
               placeholder="ชื่อลูกค้า"
+              isLoading={isLoading}
             />
 
             <fieldset>
@@ -152,6 +163,7 @@ export function FormBusinessDocument({
                 name="customerAddress"
                 label="ที่อยู่ลูกต้า"
                 placeholder="ที่อยู่ลูกต้า"
+                isLoading={isLoading}
               />
 
               <FormInput
@@ -160,6 +172,7 @@ export function FormBusinessDocument({
                 placeholder="รหัสไปรษณีย์"
                 pattern="\d{5}"
                 maxLength={5}
+                isLoading={isLoading}
               />
 
               <FormInput
@@ -169,31 +182,49 @@ export function FormBusinessDocument({
                 pattern="\d{13}"
                 maxLength={13}
                 minLength={13}
+                isLoading={isLoading}
               />
 
               <FormInput
                 name="customerBranch"
                 label="สาขา"
                 placeholder="สาขา"
+                isLoading={isLoading}
               />
             </fieldset>
           </div>
           <div className="col-span-2"></div>
           <div className="col-span-4">
-            <DatePicker name="issueDate" label="วันที่" />
-            <DatePicker name="dueDate" label="ครบกำหนด" />
+            <DatePicker
+              name="issueDate"
+              label="วันที่"
+              locale="th"
+              isLoading={isLoading}
+            />
+            <DatePicker
+              name="dueDate"
+              label="ครบกำหนด"
+              locale="th"
+              isLoading={isLoading}
+            />
             <FormInput
               name="sellerName"
               label="พนักงานขาย"
               placeholder="พนักงานขาย"
+              isLoading={isLoading}
             />
           </div>
         </div>
 
-        <FormInput name="projectName" label="โปรเจค" placeholder="โปรเจค" />
+        <FormInput
+          name="projectName"
+          label="โปรเจค"
+          placeholder="โปรเจค"
+          isLoading={isLoading}
+        />
 
         <div className="py-2">
-          <TableBusinessDocumentProducts />
+          <TableBusinessDocumentProducts isLoading={isLoading} />
         </div>
 
         <div className="grid grid-cols-12">
@@ -203,9 +234,20 @@ export function FormBusinessDocument({
               <span className="font-medium">รวมเป็นเงิน</span>
               <span>{formattedTotal}</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <span className="font-medium">หักภาษี ณ ที่จ่าย</span>
-              <span>{formattedWithholdingTax}</span>
+              <div className="flex items-center">
+                <FormInput
+                  name="withholdingTax"
+                  label=""
+                  placeholder="0.0"
+                  isLoading={isLoading}
+                  className="w-14"
+                />
+                <span className="ml-2">%</span>
+              </div>
+
+              {/* <span>{formattedWithholdingTax}</span> */}
             </div>
             <div className="flex justify-between">
               <span className="font-medium">ยอดชำระ</span>
