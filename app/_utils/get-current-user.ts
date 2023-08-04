@@ -1,6 +1,8 @@
-import { getAppServerSession } from "./get-app-server-session";
+import { GetCurrentUserError } from "@/exceptions";
 
-export class GetCurrentUserError extends Error {}
+import { getAppServerSession } from "./get-app-server-session";
+import { db, user as users } from "@/db";
+import { eq } from "drizzle-orm";
 
 type GetCurrentUserInput = {
   isThrowOnFailure?: boolean;
@@ -15,5 +17,22 @@ export async function getCurrentUser({
     throw new GetCurrentUserError("No current user");
   }
 
-  return session?.user;
+  try {
+    const email = session?.user?.email ?? "";
+
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1)
+      .execute();
+
+    return user;
+  } catch (error) {
+    console.error("getCurrentUser", error);
+
+    if (isThrowOnFailure) throw new GetCurrentUserError();
+
+    return null;
+  }
 }

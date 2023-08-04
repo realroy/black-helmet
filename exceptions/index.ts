@@ -4,3 +4,5 @@ export class UnauthenticatedError extends Error {
     this.name = "UnauthenticatedError";
   }
 }
+
+export class GetCurrentUserError extends Error {}
