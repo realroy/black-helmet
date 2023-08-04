@@ -8,13 +8,13 @@ import { getBusinessDocuments } from "@/repositories";
 import type { PageProps } from "@/types";
 
 export default async function Page({ searchParams }: PageProps) {
-  const page = searchParams?.page ? Number(searchParams.page) : 1;
-  const limit = searchParams?.limit ? Number(searchParams.limit) : 10;
+  const page = searchParams?.page ?? 1;
+  const limit = searchParams?.limit ?? 10;
 
   const businessDocuments = await getBusinessDocuments({
     kinds: ["INVOICE"],
-    page,
-    limit,
+    page: +page,
+    limit: +limit,
   });
 
   return (
