@@ -143,29 +143,29 @@ export function FormBusinessDocument({
           <div className="col-span-6">
             <FormInput
               name="customerName"
-              label="Customer Name"
-              placeholder="Customer Name"
+              label="ชื่อลูกค้า"
+              placeholder="ชื่อลูกค้า"
             />
 
             <fieldset>
               <FormInput
                 name="customerAddress"
-                label="Customer Address"
-                placeholder="Customer Address"
+                label="ที่อยู่ลูกต้า"
+                placeholder="ที่อยู่ลูกต้า"
               />
 
               <FormInput
                 name="customerZipCode"
-                label="Customer Zip Code"
-                placeholder="Zip Code"
+                label="รหัสไปรษณีย์"
+                placeholder="รหัสไปรษณีย์"
                 pattern="\d{5}"
                 maxLength={5}
               />
 
               <FormInput
                 name="customerTaxId"
-                label="Tax ID"
-                placeholder="Tax ID"
+                label="เลขประจำตัวผู้เสียภาษี"
+                placeholder="เลขประจำตัวผู้เสียภาษีลูกค้า"
                 pattern="\d{13}"
                 maxLength={13}
                 minLength={13}
@@ -173,43 +173,24 @@ export function FormBusinessDocument({
 
               <FormInput
                 name="customerBranch"
-                label="Branch"
-                placeholder="Branch"
+                label="สาขา"
+                placeholder="สาขา"
               />
             </fieldset>
           </div>
           <div className="col-span-2"></div>
           <div className="col-span-4">
-            <DatePicker name="issueDate" label="Issue Date" />
-            <DatePicker name="dueDate" label="Due Date" />
+            <DatePicker name="issueDate" label="วันที่" />
+            <DatePicker name="dueDate" label="ครบกำหนด" />
             <FormInput
               name="sellerName"
-              label="Seller Name"
-              placeholder="Seller Name"
+              label="พนักงานขาย"
+              placeholder="พนักงานขาย"
             />
           </div>
         </div>
 
-        {/* <hr className="border-b border-slate-300 py-2" /> */}
-
-        <FormInput
-          name="projectName"
-          label="Project"
-          placeholder="Project Name"
-        />
-
-        {/* <FormField
-          name={"projectName"}
-          control={methods.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project</FormLabel>
-              <FormControl>
-                <Input placeholder="Project" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        /> */}
+        <FormInput name="projectName" label="โปรเจค" placeholder="โปรเจค" />
 
         <div className="py-2">
           <TableBusinessDocumentProducts />
@@ -219,15 +200,15 @@ export function FormBusinessDocument({
           <div className="col-span-8"></div>
           <div className="col-span-4 border border-slate-200 p-4 rounded-lg">
             <div className="flex justify-between">
-              <span className="font-medium">Total</span>
+              <span className="font-medium">รวมเป็นเงิน</span>
               <span>{formattedTotal}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Withholding Tax</span>
+              <span className="font-medium">หักภาษี ณ ที่จ่าย</span>
               <span>{formattedWithholdingTax}</span>
             </div>
             <div className="flex justify-between">
-              <span className="font-medium">Amount</span>
+              <span className="font-medium">ยอดชำระ</span>
               <span>{formattedAmount}</span>
             </div>
           </div>
