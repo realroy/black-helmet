@@ -46,10 +46,15 @@ export async function getBusinessDocuments({
 }
 
 export async function getBusinessDocumentById(id: BusinessDocument["id"]) {
+  const currentUser = await getCurrentUser({ isThrowOnFailure: true });
+  const userId = currentUser?.id ?? 0;
+
   const [document] = await db
     .select()
     .from(businessDocuments)
-    .where(eq(businessDocuments.id, +id))
+    .where(
+      and(eq(businessDocuments.id, +id), eq(businessDocuments.userId, +userId))
+    )
     .limit(1);
 
   return document;
