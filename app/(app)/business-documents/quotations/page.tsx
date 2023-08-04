@@ -13,7 +13,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   const businessDocuments = await getBusinessDocuments({
     kinds: ["QUOTATION"],
-    page: +page,
+    page: +page ?? 1,
     limit: +limit,
   });
 

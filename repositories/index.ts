@@ -16,6 +16,7 @@ export async function getBusinessDocuments({
   page = 1,
   limit = 10,
 }: GetBusinessDocumentsInput) {
+  console.debug({ kinds, page, limit });
   const currentUser = await getCurrentUser({ isThrowOnFailure: true });
   const userId = currentUser?.id ?? 0;
 
