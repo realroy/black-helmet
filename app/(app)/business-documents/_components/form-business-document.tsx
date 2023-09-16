@@ -6,22 +6,19 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Printer, Save } from "lucide-react";
 
-import { upsertBusinessDocumentAction } from "../_actions";
-
 import { Button } from "@/components/button";
 import { Form } from "@/components/form";
 import { DatePicker } from "@/components/date-picker";
 import { FormInput } from "@/components/form-input";
 import { useToast } from "@/hooks";
-import {
-  isError,
-  formatCurrency,
-  calculateProductsPriceData,
-} from "@/app/_utils";
+import { isError, formatCurrency } from "@/app/_utils";
+import { calculateBusinessDocumentPriceData } from "@/services/calculate-business-document-price-data";
+
+import { upsertBusinessDocumentAction } from "../_actions";
 
 import { TableBusinessDocumentProducts } from "./table-business-document-products";
 
-import type { ComponentPropsWithoutRef } from "react";
+import { useEffect, type ComponentPropsWithoutRef } from "react";
 import type {
   BusinessDocumentKind,
   CreateBusinessDocument,
@@ -50,6 +47,8 @@ const schema = z.object({
       })
     )
     .optional(),
+
+  withholdingTax: z.number().min(0).default(0),
 });
 
 type Schema = z.infer<typeof schema>;
@@ -73,33 +72,42 @@ export function FormBusinessDocument({
     resolver: zodResolver(schema),
     defaultValues: {
       ...businessDocument,
-      customerAddress: businessDocument?.customerAddress ?? "",
-      customerBranch: businessDocument?.customerBranch ?? "",
-      customerName: businessDocument?.customerName ?? "",
-      customerTaxId: businessDocument?.customerTaxId ?? "",
-      customerZipCode: businessDocument?.customerZipCode ?? "",
-      documentNo: businessDocument?.documentNo ?? "",
-      dueDate: businessDocument?.dueDate ?? new Date(),
-      projectName: businessDocument?.projectName ?? "",
-      sellerName: businessDocument?.sellerName ?? "",
-      issueDate: businessDocument?.issueDate ?? new Date(),
       products: businessDocument?.products ?? [],
+      withholdingTax: +(businessDocument?.withholdingTax ?? "0"),
     },
   });
 
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    methods.reset({
+      ...businessDocument,
+      products: businessDocument?.products ?? [],
+      withholdingTax: +(businessDocument?.withholdingTax ?? "0"),
+    });
+  }, [isLoading, methods, businessDocument]);
+
   const products = methods.watch("products", []) ?? [];
-  const withholdingTax = +(businessDocument?.withholdingTax ?? 0.03);
+  const withholdingTax = methods.watch("withholdingTax");
 
-  const { total, amount } = calculateProductsPriceData(
+  const {
+    subTotal: total,
+    paymentAmount: amount,
+    grandTotal = 0,
+  } = calculateBusinessDocumentPriceData({
     products,
-    withholdingTax
+    withholdingTax: withholdingTax.toString(),
+  });
+
+  console.log({ total, amount, products, withholdingTax });
+
+  const formattedTotal = formatCurrency(+(total ?? 0));
+  const formattedWithholdingTax = formatCurrency(
+    +(total ?? 0) * (withholdingTax / 100)
   );
-
-  const grandTotal = +(businessDocument?.grandTotal ?? 0);
-
-  const formattedTotal = formatCurrency(total);
-  const formattedWithholdingTax = `${withholdingTax * 100}%`;
-  const formattedAmount = formatCurrency(amount);
+  const formattedAmount = formatCurrency(+(amount ?? 0));
   const toast = useToast();
 
   return (
@@ -111,6 +119,7 @@ export function FormBusinessDocument({
             ...data,
             kind,
             userId,
+            withholdingTax: data.withholdingTax.toString(),
           };
 
           try {
@@ -139,6 +148,7 @@ export function FormBusinessDocument({
                   products: JSON.stringify(values.products),
                   issueDate: values.issueDate.toISOString(),
                   dueDate: values.dueDate.toISOString(),
+                  withholdingTax: values.withholdingTax.toString(),
                 };
 
                 const urlSearchParams = new URLSearchParams(
@@ -250,19 +260,22 @@ export function FormBusinessDocument({
               <span>{formattedTotal}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="font-medium">หักภาษี ณ ที่จ่าย</span>
               <div className="flex items-center">
-                <FormInput
-                  name="withholdingTax"
-                  label=""
-                  placeholder="0.0"
-                  isLoading={isLoading}
-                  className="w-14"
-                />
-                <span className="ml-2">%</span>
+                <span className="font-medium mr-3">หักภาษี ณ ที่จ่าย</span>
+                <div className="flex items-center">
+                  <FormInput
+                    name="withholdingTax"
+                    label=""
+                    placeholder="0.0"
+                    isLoading={isLoading}
+                    className="w-14"
+                    formItem={{ className: "py-0 space-y-0 flex items-center" }}
+                  />
+                  <span className="ml-2">%</span>
+                </div>
               </div>
 
-              {/* <span>{formattedWithholdingTax}</span> */}
+              <span>{formattedWithholdingTax}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium">ยอดชำระ</span>

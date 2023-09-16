@@ -158,7 +158,7 @@ export function PrintableBussinessDocument({ document }: Props) {
                   <td>
                     {formatCurrency(
                       +(document?.grandTotal ?? 0) *
-                        +(document?.withholdingTax ?? 0)
+                        (+(document?.withholdingTax ?? 0) / 100)
                     )}
                   </td>
                 </tr>

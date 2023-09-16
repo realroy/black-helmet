@@ -5,15 +5,6 @@ import { cookies } from "next/headers";
 import { decode } from "next-auth/jwt";
 
 import {
-  type DeleteQuotationByUserInput,
-  deleteQuotationByUser,
-} from "@/services/delete-quotation-by-user";
-import {
-  type UpsertQuotationByUserInput,
-  upsertQuotationByUser,
-} from "@/services/upsert-quotation-by-user";
-
-import {
   upsertBusinessDocumentByUser,
   deleteBusinessDocumentByUser,
 } from "@/services";
@@ -22,10 +13,6 @@ import type {
   DeleteBusinessDocumentByUserInput,
 } from "@/services";
 import { BusinessDocumentKind } from "@/types";
-
-function reinvalidateQuotations() {
-  return revalidatePath("/quotations");
-}
 
 function reinvalidateBusinessDocument(kind: BusinessDocumentKind) {
   return () =>
@@ -49,14 +36,6 @@ async function getUser() {
     id: +(decoded?.sub ?? decoded?.uid ?? 0) || undefined,
     email: decoded?.email,
   };
-}
-
-export async function upsertQuotationAction(input: UpsertQuotationByUserInput) {
-  return upsertQuotationByUser(input).then(reinvalidateQuotations);
-}
-
-export async function deleteQuotationAction(input: DeleteQuotationByUserInput) {
-  return deleteQuotationByUser(input).then(reinvalidateQuotations);
 }
 
 export async function upsertBusinessDocumentAction(
