@@ -1,10 +1,11 @@
 "use client";
 
-import { formatCurrency } from "@/app/_utils";
 import { useEffect } from "react";
 
-import type { BusinessDocument } from "@/types";
+import { formatCurrency } from "@/app/_utils";
 import { toThaiCurrencyPronuciation } from "./utils";
+
+import type { BusinessDocument } from "@/types";
 
 type Props = {
   document: Partial<BusinessDocument>;
@@ -129,12 +130,12 @@ export function PrintableBussinessDocument({ document }: Props) {
                 <tr>
                   <th style={{ textAlign: "right" }}>รวมเป็นเงิน</th>
                   <td></td>
-                  <td>{document?.subTotal}</td>
+                  <td>{formatCurrency(+(document?.subTotal ?? 0))}</td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>จำนวนเงินรวมทั้งหมด</th>
                   <td></td>
-                  <td>{document?.grandTotal}</td>
+                  <td>{formatCurrency(+(document?.grandTotal ?? 0))}</td>
                 </tr>
 
                 <tr>
@@ -150,18 +151,21 @@ export function PrintableBussinessDocument({ document }: Props) {
 
                 <tr>
                   <th style={{ textAlign: "right" }}>
-                    หักภาษี ณ ที่จ่าย {document?.withholdingTax}%
+                    หักภาษี ณ ที่จ่าย{" "}
+                    {formatCurrency(+(document?.withholdingTax ?? 0))}%
                   </th>
                   <td></td>
                   <td>
-                    {+(document?.grandTotal ?? 0) *
-                      +(document?.withholdingTax ?? 0)}
+                    {formatCurrency(
+                      +(document?.grandTotal ?? 0) *
+                        +(document?.withholdingTax ?? 0)
+                    )}
                   </td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>ยอดชำระ</th>
                   <td></td>
-                  <td>{document?.paymentAmount}</td>
+                  <td>{formatCurrency(+(document?.paymentAmount ?? 0))}</td>
                 </tr>
               </tbody>
             </table>
@@ -210,7 +214,9 @@ export function PrintableBussinessDocument({ document }: Props) {
           </div>
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ textAlign: "right" }}>ในนาม {document?.sellerName}</p>
+          <p style={{ textAlign: "right" }}>
+            ในนาม {document?.sellerName ?? "-"}
+          </p>
           <div
             style={{
               display: "flex",
