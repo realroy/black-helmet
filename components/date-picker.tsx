@@ -46,7 +46,7 @@ export function DatePicker<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col w-full py-2">
+        <FormItem className="py-2">
           <FormLabel>{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>

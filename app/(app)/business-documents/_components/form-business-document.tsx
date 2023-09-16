@@ -111,6 +111,7 @@ export function FormBusinessDocument({
   return (
     <Form {...props} {...methods}>
       <form
+        className="pb-[72px] lg:pb-0"
         onSubmit={methods.handleSubmit(async (data) => {
           const newBusinessDocument = {
             ...businessDocument,
@@ -134,7 +135,7 @@ export function FormBusinessDocument({
           }
         })}
       >
-        <div className="flex w-full justify-end">
+        <div className="flex w-full lg:justify-end fixed lg:relative bottom-0 bg-white py-4">
           <Button
             type="button"
             onClick={() => {
@@ -172,8 +173,8 @@ export function FormBusinessDocument({
             บันทึก
           </Button>
         </div>
-        <div className="grid grid-cols-12">
-          <div className="col-span-6">
+        <div className="grid grid-cols-12 lg:gap-x-4">
+          <div className="col-span-12 lg:col-span-6">
             <FormInput
               name="customerName"
               label="ชื่อลูกค้า"
@@ -216,8 +217,7 @@ export function FormBusinessDocument({
               />
             </fieldset>
           </div>
-          <div className="col-span-2"></div>
-          <div className="col-span-4">
+          <div className="col-span-12 lg:col-span-6">
             <DatePicker
               name="issueDate"
               label="วันที่"
@@ -251,8 +251,8 @@ export function FormBusinessDocument({
         </div>
 
         <div className="grid grid-cols-12">
-          <div className="col-span-8"></div>
-          <div className="col-span-4 border border-slate-200 p-4 rounded-lg">
+          <div className="col-span-0 lg:col-span-8"></div>
+          <div className="col-span-12 lg:col-span-4 border border-slate-200 p-4 rounded-lg">
             <div className="flex justify-between">
               <span className="font-medium">รวมเป็นเงิน</span>
               <span>{formattedTotal}</span>
