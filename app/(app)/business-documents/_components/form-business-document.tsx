@@ -48,7 +48,11 @@ const schema = z.object({
     )
     .optional(),
 
-  withholdingTax: z.number().min(0).default(0),
+  withholdingTax: z
+    .number()
+    .min(0)
+    .default(0)
+    .transform((val) => +val),
 });
 
 type Schema = z.infer<typeof schema>;
