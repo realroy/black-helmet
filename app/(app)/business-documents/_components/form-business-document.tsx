@@ -101,8 +101,6 @@ export function FormBusinessDocument({
     withholdingTax: withholdingTax.toString(),
   });
 
-  console.log({ total, amount, products, withholdingTax });
-
   const formattedTotal = formatCurrency(+(total ?? 0));
   const formattedWithholdingTax = formatCurrency(
     +(total ?? 0) * (withholdingTax / 100)
