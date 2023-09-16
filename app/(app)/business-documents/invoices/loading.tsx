@@ -13,7 +13,7 @@ export default async function Loading() {
           <Button icon={<Plus />}>สร้าง</Button>
         </Link>
       </div>
-      <TableBusinessDocuments businessDocuments={[]} />
+      <TableBusinessDocuments businessDocuments={[]} isLoading />
     </>
   );
 }
