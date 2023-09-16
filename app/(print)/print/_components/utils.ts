@@ -1,4 +1,4 @@
-const TH_NUMBER_MAP = {
+export const TH_NUMBER_MAP = {
   "0": "",
   "1": "หนึ่ง",
   "2": "สอง",
@@ -11,7 +11,7 @@ const TH_NUMBER_MAP = {
   "9": "เก้า",
 } as const;
 
-const TH_DIGITS = [
+export const TH_DIGITS = [
   "หน่วย",
   "สิบ",
   "ร้อย",
@@ -21,41 +21,23 @@ const TH_DIGITS = [
   "ล้าน",
 ] as const;
 
+export const TH_SUFFIX = "บาทถ้วน";
+
 export function toThaiCurrencyPronuciation(num: number) {
-  return num
-    .toString()
-    .split("")
-    .reduceRight((previousValue, currentValue, currentIndex) => {
-      if (!(currentValue in TH_NUMBER_MAP)) {
-        return previousValue;
+  const splittedNum = num.toString().split("");
+  const length = splittedNum.length;
+  const result = splittedNum
+    .map((num, index) => {
+      if (num === "0") {
+        return;
       }
 
-      const thNumber =
-        TH_NUMBER_MAP[currentValue as keyof typeof TH_NUMBER_MAP];
+      const thNumber = TH_NUMBER_MAP[num as keyof typeof TH_NUMBER_MAP];
+      const thDigit = TH_DIGITS[length - index - 1];
 
-      if (currentIndex === 0) {
-        return [thNumber, previousValue].join("");
-      }
+      return `${thNumber}${thDigit}`;
+    })
+    .join("");
 
-      if (currentIndex <= 6) {
-        return [thNumber, TH_DIGITS[currentIndex], previousValue].join("");
-      }
-
-      const result = [thNumber] as string[];
-
-      for (let digit = currentIndex; digit > 0; digit /= 6) {
-        const modedDigit = digit % 6;
-
-        if (modedDigit === 0) {
-          result.push(TH_DIGITS[6]);
-          continue;
-        }
-
-        result.push(TH_DIGITS[modedDigit]);
-      }
-
-      result.push(previousValue);
-
-      return result.join("");
-    }, "บาทถ้วน");
+  return result + TH_SUFFIX;
 }
