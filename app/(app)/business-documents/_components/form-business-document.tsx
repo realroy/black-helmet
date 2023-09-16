@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -132,7 +131,23 @@ export function FormBusinessDocument({
           <Button
             type="button"
             onClick={() => {
-              window.open(`/print/documents/${businessDocument?.id}`);
+              if (!businessDocument?.id) {
+                const values = methods.getValues();
+
+                const serializedValue = {
+                  ...values,
+                  products: JSON.stringify(values.products),
+                  issueDate: values.issueDate.toISOString(),
+                  dueDate: values.dueDate.toISOString(),
+                };
+
+                const urlSearchParams = new URLSearchParams(
+                  serializedValue
+                ).toString();
+                window.open(`/print/documents/preview?${urlSearchParams}`);
+              } else {
+                window.open(`/print/documents/${businessDocument?.id}`);
+              }
             }}
             isLoading={isLoading || methods.formState.isSubmitting}
             variant={"outline"}
