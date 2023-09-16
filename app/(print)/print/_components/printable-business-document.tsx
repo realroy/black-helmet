@@ -45,7 +45,11 @@ export function PrintableBussinessDocument({ document }: Props) {
                 </tr>
                 <tr>
                   <th>วันที่</th>
-                  <td>{document?.issueDate?.toLocaleDateString("th")}</td>
+                  <td>
+                    <time dateTime={document?.issueDate?.toString()}>
+                      {document?.issueDate?.toLocaleDateString("th")}
+                    </time>
+                  </td>
                 </tr>
                 <tr>
                   <th>ผู้ขาย</th>
@@ -202,15 +206,19 @@ export function PrintableBussinessDocument({ document }: Props) {
               ผู้รับสั่งซื้อสินค้า
             </p>
 
-            <p
-              style={{
-                flex: 1,
-                borderTop: "1px solid rgba(0,0,0,0.3)",
-                paddingTop: "1rem",
-              }}
-            >
-              วันที่
-            </p>
+            <div style={{ flex: 1 }}>
+              <time style={{ visibility: "hidden" }}>
+                {document?.issueDate?.toLocaleDateString("th")}
+              </time>
+              <p
+                style={{
+                  borderTop: "1px solid rgba(0,0,0,0.3)",
+                  paddingTop: "1rem",
+                }}
+              >
+                วันที่
+              </p>
+            </div>
           </div>
         </div>
         <div style={{ flex: 1 }}>
@@ -237,15 +245,19 @@ export function PrintableBussinessDocument({ document }: Props) {
               ผู้อนุมัติ
             </p>
 
-            <p
-              style={{
-                flex: 1,
-                borderTop: "1px solid rgba(0,0,0,0.3)",
-                paddingTop: "1rem",
-              }}
-            >
-              วันที่
-            </p>
+            <div style={{ flex: 1 }}>
+              <time dateTime={document?.issueDate?.toString()}>
+                {document?.issueDate?.toLocaleDateString("th")}
+              </time>
+              <p
+                style={{
+                  borderTop: "1px solid rgba(0,0,0,0.3)",
+                  paddingTop: "1rem",
+                }}
+              >
+                วันที่
+              </p>
+            </div>
           </div>
         </div>
       </div>
