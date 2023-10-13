@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-
-import { Button } from "@/components/button";
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
-import { DollarSignIcon, LogOutIcon, UserCircle2Icon } from "lucide-react";
+import { LogOutIcon, UserCircle2Icon } from "lucide-react";
+
+import { Button } from "@/components/button";
 import { PopoverContent, Popover, PopoverTrigger } from "@/components/popover";
 
 export type NavbarProps = {
@@ -29,39 +29,49 @@ export function Navbar({ user }: NavbarProps) {
           </Link>
         </div>
         {isAuth ? (
-          <div className="flex">
-            <Link href={"/business-documents/quotations"} title="Quotations">
-              <div className={itemClassName}>เอกสารขาย</div>
-            </Link>
-            <div className="flex flex-col items-center">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <div className={itemClassName}>
-                    <UserCircle2Icon />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent className="w-80" side="bottom" sideOffset={16}>
-                  <div className="flex flex-col">
-                    <div className="p-4">
-                      <h3 className="text-sm">{user.email}</h3>
-                    </div>
-                    <Button
-                      variant={"secondary"}
-                      className="w-full"
-                      icon={<LogOutIcon />}
-                      onClick={() => signOut()}
-                    >
-                      Sign out
-                    </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
+          <AuthNavbar user={user} />
         ) : (
           <Link href={"/api/auth/signin"}>Login</Link>
         )}
       </div>
     </nav>
+  );
+}
+
+type AuthNavbarProps = {
+  user: Session["user"];
+};
+
+function AuthNavbar({ user }: AuthNavbarProps) {
+  return (
+    <div className="flex">
+      <Link href={"/business-documents/quotations"} title="Quotations">
+        <div className={itemClassName}>เอกสารขาย</div>
+      </Link>
+      <div className="flex flex-col items-center">
+        <Popover>
+          <PopoverTrigger asChild>
+            <div className={itemClassName}>
+              <UserCircle2Icon />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-80" side="bottom" sideOffset={16}>
+            <div className="flex flex-col">
+              <div className="p-4">
+                <h3 className="text-sm">{user?.email}</h3>
+              </div>
+              <Button
+                variant={"secondary"}
+                className="w-full"
+                icon={<LogOutIcon />}
+                onClick={() => signOut()}
+              >
+                Sign out
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
+    </div>
   );
 }
