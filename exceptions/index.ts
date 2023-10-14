@@ -6,3 +6,10 @@ export class UnauthenticatedError extends Error {
 }
 
 export class GetCurrentUserError extends Error {}
+
+export class UnauthorizedError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = "UnauthorizedError";
+  }
+}
