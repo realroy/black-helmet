@@ -1,8 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { decode } from "next-auth/jwt";
 
 import {
   upsertBusinessDocumentByUser,
@@ -19,23 +17,6 @@ function reinvalidateBusinessDocument(kind: BusinessDocumentKind) {
     revalidatePath(
       `/business-documents/${kind.toLowerCase().replace("_", "-")}`
     );
-}
-
-async function getUser() {
-  const token = cookies().get("next-auth.session-token")?.value;
-  if (!token) {
-    return;
-  }
-
-  const decoded = await decode({
-    token,
-    secret: process.env.NEXTAUTH_SECRET as string,
-  });
-
-  return {
-    id: +(decoded?.sub ?? decoded?.uid ?? 0) || undefined,
-    email: decoded?.email,
-  };
 }
 
 export async function upsertBusinessDocumentAction(

@@ -8,8 +8,8 @@ export default async function Loading() {
   return (
     <>
       <div className="flex justify-between">
-        <h1 className="text-4xl">ใบเสนอราคา</h1>
-        <Link href={"/business-documents/quotations/new"}>
+        <h1 className="text-4xl">ใบเสร็จรับเงิน</h1>
+        <Link href={"/business-documents/receipts/new"}>
           <Button icon={<Plus />}>สร้าง</Button>
         </Link>
       </div>

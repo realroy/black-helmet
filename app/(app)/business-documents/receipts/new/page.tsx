@@ -6,22 +6,22 @@ import {
 } from "../../_components";
 
 export const metadata = {
-  title: "สร้างใบเสนอราคา | Black Helmet",
+  title: "สร้างใบเสร็จรับเงิน | Black Helmet",
 };
 
 export default async function Page() {
-  const quotation = await newBusinessDocumentByUser({ kind: "QUOTATION" });
+  const receipt = await newBusinessDocumentByUser({ kind: "RECEIPTS" });
 
   return (
     <>
       <HeaderBusinessDocument
-        documentNo={quotation.documentNo}
-        title="สร้างใบเสนอราคา"
+        documentNo={receipt.documentNo}
+        title="สร้างใบเสร็จรับเงิน"
       />
       <FormBusinessDocument
-        businessDocument={quotation}
-        userId={quotation.userId}
-        kind={"QUOTATION"}
+        businessDocument={receipt}
+        userId={receipt.userId}
+        kind={"RECEIPTS"}
       />
     </>
   );

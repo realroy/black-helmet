@@ -37,6 +37,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
           >
             ใบแจ้งหนี้
           </MenuItem>
+
+          <MenuItem
+            href={"/business-documents/receipts"}
+            icon={<FilesIcon className="mr-2" />}
+          >
+            ใบเสร็จรับเงิน
+          </MenuItem>
         </ul>
       </nav>
       <Container>{children}</Container>

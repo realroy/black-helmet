@@ -6,8 +6,12 @@ import {
 export default function Loading() {
   return (
     <>
-      <HeaderBusinessDocument title="แก้ไขใบเสนอราคา" documentNo="" isLoading />
-      <FormBusinessDocument isLoading userId={0} kind={"QUOTATION"} />
+      <HeaderBusinessDocument
+        title="แก้ไขใบเสร็จรับเงิน"
+        documentNo=""
+        isLoading
+      />
+      <FormBusinessDocument isLoading userId={0} kind={"RECEIPTS"} />
     </>
   );
 }

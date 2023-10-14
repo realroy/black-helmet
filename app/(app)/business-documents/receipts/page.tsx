@@ -12,7 +12,7 @@ export default async function Page({ searchParams }: PageProps) {
   const limit = searchParams?.limit ?? 10;
 
   const businessDocuments = await getBusinessDocuments({
-    kinds: ["QUOTATION"],
+    kinds: ["RECEIPTS"],
     page: +page ?? 1,
     limit: +limit,
   });
@@ -20,8 +20,8 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <>
       <div className="flex justify-between">
-        <h1 className="text-4xl">ใบเสนอราคา</h1>
-        <Link href={"/business-documents/quotations/new"}>
+        <h1 className="text-4xl">ใบเสร็จรับเงิน</h1>
+        <Link href={"/business-documents/receipts/new"}>
           <Button icon={<Plus />}>สร้าง</Button>
         </Link>
       </div>

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { businessDocuments, db } from "@/db";
 
@@ -15,27 +15,32 @@ type Props = {
 
 export function generateMetadata({ params: { documentNo } }: Props): Metadata {
   return {
-    title: `แก้ไขใบเสนอราคา ${documentNo} | Black Helmet`,
+    title: `แก้ไขใบเสร็จรับเงิน ${documentNo} | Black Helmet`,
   };
 }
 
 export default async function Page({ params: { documentNo } }: Props) {
-  const [quotation] = await db
+  const [receipt] = await db
     .select()
     .from(businessDocuments)
-    .where(eq(businessDocuments.documentNo, documentNo))
+    .where(
+      and(
+        eq(businessDocuments.documentNo, documentNo),
+        eq(businessDocuments.kind, "RECEIPTS")
+      )
+    )
     .limit(1);
 
   return (
     <>
       <HeaderBusinessDocument
-        title="แก้ไขใบเสนอราคา"
-        documentNo={quotation.documentNo}
+        title="แก้ไขใบเสร็จรับเงิน"
+        documentNo={receipt.documentNo}
       />
       <FormBusinessDocument
-        businessDocument={quotation}
-        userId={quotation.userId}
-        kind={"QUOTATION"}
+        businessDocument={receipt}
+        userId={receipt.userId}
+        kind={"RECEIPTS"}
       />
     </>
   );
