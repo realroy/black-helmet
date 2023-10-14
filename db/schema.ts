@@ -11,7 +11,12 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-import type { BusinessDocumentKind, BusinessDocumentProduct } from "@/types";
+import type {
+  BusinessDocumentKind,
+  BusinessDocumentProduct,
+  BusinessDocumentStatus,
+} from "@/types";
+import { BUSINESS_DOCUMENT_KINDS } from "@/configs";
 
 const defaultColumns = {
   id: serial("id").primaryKey(),
@@ -70,10 +75,18 @@ export const businessDocuments = pgTable(
       .notNull()
       .references(() => user.id),
     kind: varchar("kind").notNull().$type<BusinessDocumentKind>(),
+    status: varchar("status")
+      .notNull()
+      .$type<BusinessDocumentStatus>()
+      .default("PENDING"),
   },
   (businessDocuments) => ({
     userIndex: index("business_documents_user_id_idx").on(
       businessDocuments.userId
+    ),
+    kindIndex: index("business_documents_kind_idx").on(businessDocuments.kind),
+    statusIndex: index("business_documents_status_idx").on(
+      businessDocuments.status
     ),
   })
 );

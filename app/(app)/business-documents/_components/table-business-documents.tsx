@@ -69,6 +69,7 @@ export function TableBusinessDocuments({
           <TableHead>เลขที่เอกสาร </TableHead>
           <TableHead>ชื่อลูกค้า/ชื่อโปรเจ็ค</TableHead>
           <TableHead className="text-right">ยอดรวมสุทธิ</TableHead>
+          <TableHead className="text-right">สถานะ</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -153,6 +154,9 @@ function TableBusinessDocumentRow({
       </TableCell>
       <TableCell onClick={onClick} className="text-right">
         {formatCurrency(+businessDocument.paymentAmount)}
+      </TableCell>
+      <TableCell onClick={onClick} className="text-right">
+        {"yeah"}
       </TableCell>
       <TableCell>
         <DropdownMenu>
