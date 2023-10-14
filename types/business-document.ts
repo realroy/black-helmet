@@ -25,3 +25,15 @@ export type UpdateBusinessDocument = CreateBusinessDocument;
 
 export type BusinessDocumentStatus =
   (typeof BUSINESS_DOCUMENT_STATUSES)[number];
+
+export type Invoice = BusinessDocument & {
+  kind: (typeof BUSINESS_DOCUMENT_KINDS)["1"];
+};
+
+export type Quotation = BusinessDocument & {
+  kind: (typeof BUSINESS_DOCUMENT_KINDS)["2"];
+};
+
+export type Receipt = BusinessDocument & {
+  kind: (typeof BUSINESS_DOCUMENT_KINDS)["3"];
+};
