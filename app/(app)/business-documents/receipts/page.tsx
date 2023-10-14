@@ -12,7 +12,7 @@ export default async function Page({ searchParams }: PageProps) {
   const limit = searchParams?.limit ?? 10;
 
   const businessDocuments = await getBusinessDocuments({
-    kinds: ["RECEIPTS"],
+    kinds: ["RECEIPT"],
     page: +page ?? 1,
     limit: +limit,
   });

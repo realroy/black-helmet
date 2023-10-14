@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function Page() {
-  const receipt = await newBusinessDocumentByUser({ kind: "RECEIPTS" });
+  const receipt = await newBusinessDocumentByUser({ kind: "RECEIPT" });
 
   return (
     <>
@@ -21,7 +21,7 @@ export default async function Page() {
       <FormBusinessDocument
         businessDocument={receipt}
         userId={receipt.userId}
-        kind={"RECEIPTS"}
+        kind={"RECEIPT"}
       />
     </>
   );

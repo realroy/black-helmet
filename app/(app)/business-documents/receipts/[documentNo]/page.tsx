@@ -26,7 +26,7 @@ export default async function Page({ params: { documentNo } }: Props) {
     .where(
       and(
         eq(businessDocuments.documentNo, documentNo),
-        eq(businessDocuments.kind, "RECEIPTS")
+        eq(businessDocuments.kind, "RECEIPT")
       )
     )
     .limit(1);
@@ -40,7 +40,7 @@ export default async function Page({ params: { documentNo } }: Props) {
       <FormBusinessDocument
         businessDocument={receipt}
         userId={receipt.userId}
-        kind={"RECEIPTS"}
+        kind={"RECEIPT"}
       />
     </>
   );

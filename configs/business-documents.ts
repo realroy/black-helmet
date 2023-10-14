@@ -2,7 +2,7 @@ export const BUSINESS_DOCUMENT_KINDS = [
   "BILLING_NOTE",
   "INVOICE",
   "QUOTATION",
-  "RECEIPTS",
+  "RECEIPT",
 ] as const;
 
 export const BUSINESS_DOCUMENT_KIND_ABBREVIATIONS = [

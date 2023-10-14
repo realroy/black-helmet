@@ -11,7 +11,7 @@ export default function Loading() {
         documentNo=""
         isLoading
       />
-      <FormBusinessDocument isLoading userId={0} kind={"RECEIPTS"} />
+      <FormBusinessDocument isLoading userId={0} kind={"RECEIPT"} />
     </>
   );
 }
