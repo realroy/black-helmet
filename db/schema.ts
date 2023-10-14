@@ -77,3 +77,24 @@ export const businessDocuments = pgTable(
     ),
   })
 );
+
+export const relevantBusinessDocuments = pgTable(
+  "relevantBusinessDocuments",
+  {
+    ...defaultColumns,
+    sourceBusinessDocumentId: integer("source_business_document_id")
+      .notNull()
+      .references(() => businessDocuments.id),
+    targetBusinessDocumentId: integer("target_business_document_id")
+      .notNull()
+      .references(() => businessDocuments.id),
+    userId: integer("user_id")
+      .notNull()
+      .references(() => user.id),
+  },
+  (table) => ({
+    userIndex: index("relavant_business_documents_user_id_idx").on(
+      table.userId
+    ),
+  })
+);
